@@ -37,10 +37,10 @@ public class Teste {
          
 //        JPAUtil.beginTransaction();
         GenericDAO dao = new GenericDAO(manager1, Cultura.class);
-//        Cultura cultura = new Cultura();
-//        cultura.setNome("Alface");
-//        cultura.setCategoria("Hortaliça");
-//        cultura.setDescricao("Qualidade A");
+        Cultura cultura = new Cultura();
+        cultura.setNome("Alface");
+        cultura.setCategoria("Hortaliça");
+        cultura.setDescricao("Qualidade A");
 //        
         Cultura c = (Cultura)dao.findByName("Feijão").get(0);
         System.out.println("Cultura recuperada: "+c);
