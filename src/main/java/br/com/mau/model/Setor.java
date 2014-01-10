@@ -4,6 +4,7 @@
  */
 package br.com.mau.model;
 
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,6 +37,7 @@ public class Setor implements Serializable {
     @OneToMany(cascade= CascadeType.ALL)
     private Set<Ambiente> ambientes = new HashSet<Ambiente>();
     
+    @NotNull(message="Largura não pode ficar vazio!!")
     private double largura;
     
     private String tipoSolo;
@@ -41,12 +45,17 @@ public class Setor implements Serializable {
     @Column(name="status")
     private boolean status;
     
+    @NotNull
     private double comprimento;
     
+    @NotNull
     @OneToOne()
     private Cultura cultura;
     
+    @NotNull
     private String descricao;
+    
+    @NotNull @Size(min=5,max=10, message="O nome não pode ter menos que 5 ou mais que 10 caracteres")
     private String nome;    
 
     public Setor() {

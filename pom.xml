@@ -67,6 +67,22 @@
       <groupId>com.barrybecker4</groupId>
       <artifactId>bb4-liquid</artifactId>
       <version>1.1.2</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jai-codec</artifactId>
+          <groupId>com.sun.media</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.0.0.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>4.3.1.Final</version>
     </dependency>
   </dependencies>
 </project>

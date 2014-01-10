@@ -7,6 +7,7 @@ package br.com.mau.screens;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.model.Cultura;
 import br.com.mau.util.JPAUtil;
+import br.com.mau.validation.CulturaValidator;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,12 +15,14 @@ import javax.swing.JOptionPane;
  * @author Mauricio
  */
 public class JIFCultura extends javax.swing.JInternalFrame {
+    private final CulturaValidator validator;
 
     /**
      * Creates new form JIFCultura
      */
     public JIFCultura() {
         initComponents();
+        validator = new CulturaValidator();
     }
 
     /**
@@ -241,17 +244,15 @@ public class JIFCultura extends javax.swing.JInternalFrame {
 
     private void jbSalvarCulturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarCulturaActionPerformed
         Cultura c = getCultura();
-        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Cultura.class);
-        if(c.getId() != null){
-           dao.update(c);
-           JOptionPane.showMessageDialog(null, "Cultura Atualizada!!","Atualização",
-                JOptionPane.INFORMATION_MESSAGE);        
+        
+        String msg = validator.validate(c);
+        
+        if(!"".equals(msg == null ? "" : msg)){
+            JOptionPane.showMessageDialog(null, msg, "Validação", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            dao.save(c);
-            JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
-                JOptionPane.INFORMATION_MESSAGE);
-        }        
-        dispose();
+            persistCultura(c);
+        }
+        
     }//GEN-LAST:event_jbSalvarCulturaActionPerformed
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
@@ -277,4 +278,18 @@ public class JIFCultura extends javax.swing.JInternalFrame {
     private javax.swing.JTextField tfId;
     private javax.swing.JTextField tfNome;
     // End of variables declaration//GEN-END:variables
+
+    private void persistCultura(Cultura c) {
+        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Cultura.class);
+        if(c.getId() != null){
+           dao.update(c);
+           JOptionPane.showMessageDialog(null, "Cultura Atualizada!!","Atualização",
+                JOptionPane.INFORMATION_MESSAGE);        
+        }else{
+            dao.save(c);
+            JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
+                JOptionPane.INFORMATION_MESSAGE);
+        }        
+        dispose();
+    }
 }

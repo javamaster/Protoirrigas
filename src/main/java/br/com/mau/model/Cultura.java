@@ -4,12 +4,15 @@
  */
 package br.com.mau.model;
 
+
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -23,8 +26,13 @@ public class Cultura implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
+    @NotNull @Size(min=5, max=10, message="minimo 5 maximo 10")
     private String nome;    
+    
+    @NotNull
     private String descricao;
+    
+    @NotNull
     private String categoria;
 
     public Cultura() {

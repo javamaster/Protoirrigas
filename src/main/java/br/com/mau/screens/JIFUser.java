@@ -47,8 +47,6 @@ public class JIFUser extends javax.swing.JInternalFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jbSalvar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
-        JbExcluir = new javax.swing.JButton();
-        jbEditar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jpassConfirmar = new javax.swing.JPasswordField();
@@ -126,15 +124,9 @@ public class JIFUser extends javax.swing.JInternalFrame {
 
         jbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/cancel.png"))); // NOI18N
         jbCancelar.setText("Cancelar");
-
-        JbExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/trash.png"))); // NOI18N
-        JbExcluir.setText("Excluir");
-
-        jbEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/alter.png"))); // NOI18N
-        jbEditar.setText("Alterar");
-        jbEditar.addActionListener(new java.awt.event.ActionListener() {
+        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbEditarActionPerformed(evt);
+                jbCancelarActionPerformed(evt);
             }
         });
 
@@ -187,24 +179,20 @@ public class JIFUser extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jbSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbCancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JbExcluir))
+                        .addComponent(jbCancelar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {JbExcluir, jbCancelar, jbEditar, jbSalvar});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbCancelar, jbSalvar});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -232,10 +220,8 @@ public class JIFUser extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar)
-                    .addComponent(jbCancelar)
-                    .addComponent(JbExcluir)
-                    .addComponent(jbEditar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jbCancelar))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {tfLogin, tfNome});
@@ -266,10 +252,6 @@ public class JIFUser extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNomeActionPerformed
 
-    private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbEditarActionPerformed
-
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
         
         //Pegar os dados do usuario da tela de cadastro
@@ -297,8 +279,11 @@ public class JIFUser extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jbSalvarActionPerformed
 
+    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbCancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JbExcluir;
     private javax.swing.ButtonGroup bgUserStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -312,7 +297,6 @@ public class JIFUser extends javax.swing.JInternalFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton jbCancelar;
-    private javax.swing.JButton jbEditar;
     private javax.swing.JButton jbSalvar;
     private javax.swing.JLabel jlCodigo;
     private javax.swing.JPasswordField jpassConfirmar;

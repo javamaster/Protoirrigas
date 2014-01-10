@@ -4,12 +4,15 @@
  */
 package br.com.mau.model;
 
+
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -23,14 +26,18 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
+    @NotNull @Size(min=5, max=10)
     private String nome;
     
+    @NotNull @Size
     private String login;
     
+    @NotNull
     private String senha;
     
     private String foto;
     
+    @NotNull
     private Boolean status;
 
     public Usuario() {
@@ -93,9 +100,5 @@ public class Usuario implements Serializable {
 
     public void setFoto(String foto) {
         this.foto = foto;
-    }
-    
-    
-    
-    
+    }    
 }

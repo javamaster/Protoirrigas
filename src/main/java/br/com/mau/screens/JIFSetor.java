@@ -8,6 +8,7 @@ import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.model.Cultura;
 import br.com.mau.model.Setor;
 import br.com.mau.util.JPAUtil;
+import br.com.mau.validation.SetorValidator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -29,7 +30,8 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         initComponents();
         populateComboCulture();
         setSize(450,450);
-        jbExcluir.setVisible(Boolean.FALSE);        
+        jbExcluir.setVisible(Boolean.FALSE);   
+        validator = new SetorValidator();
     }
 
     /**
@@ -315,20 +317,14 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
        
         Setor s = getSetor();
-        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Setor.class);
+       
+        String msg = validator.validate(s);
         
-        if(s.getId() != null){
-           dao.update(s);
-           JOptionPane.showMessageDialog(null, "Setor Atualizado!!","Atualização",
-                JOptionPane.INFORMATION_MESSAGE);        
+        if(!"".equals(msg == null ? "" : msg)){
+            JOptionPane.showMessageDialog(null, msg, "Validação", JOptionPane.INFORMATION_MESSAGE);
         }else{
-            dao.save(s);
-            JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
-                JOptionPane.INFORMATION_MESSAGE);
-        }        
-        dispose();
-        dao.close();
-        //System.out.println(s.toString());
+            persistSetor(s);
+        }
     }//GEN-LAST:event_jbSalvarActionPerformed
 
     private void cbCulturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCulturaActionPerformed
@@ -474,6 +470,7 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     private ArrayList<Cultura> storedCulturas;
     private Hashtable cults;
+    private SetorValidator validator;
     
     private Cultura getCulturaByName(String name) {
         GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Cultura.class);
@@ -491,5 +488,20 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     
     public Setor getSetor(){
         return loadSetorFromPanel();
+    }
+
+    private void persistSetor(Setor s) {
+         GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Setor.class);
+        if(s.getId() != null){
+           dao.update(s);
+           JOptionPane.showMessageDialog(null, "Setor Atualizado!!","Atualização",
+                JOptionPane.INFORMATION_MESSAGE);        
+        }else{
+            dao.save(s);
+            JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
+                JOptionPane.INFORMATION_MESSAGE);
+        }        
+        dispose();
+        dao.close();
     }
 }
