@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
@@ -36,6 +37,8 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             "COM4", "COM7",// Windows   
             "/dev/rfcomm0" // Ubuntu Bluetooth
     };
+    private ArrayList<CommPortIdentifier> ports;
+    
     private BufferedReader reader;
     private static InputStream input;
     private static OutputStream output;
@@ -50,17 +53,25 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         
         CommPortIdentifier port = null;
         String portName = "";
+        ports = new ArrayList<CommPortIdentifier>();
         
-        while (portIdentifers.hasMoreElements()) {            
+//        while (portIdentifers.hasMoreElements()) {            
+//            CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
+//            for (String name : PORT_NAMES) {
+//                if(currentPortId.getName().equals(name)){
+//                    port = currentPortId;
+//                    portName = name;
+//                    break;
+//                }
+//            }
+//        }
+        
+        while (portIdentifers.hasMoreElements()) {      
             CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
-            for (String name : PORT_NAMES) {
-                if(currentPortId.getName().equals(name)){
-                    port = currentPortId;
-                    portName = name;
-                    break;
-                }
-            }
-        }        
+            if(currentPortId != null){
+                ports.add(currentPortId); 
+            }            
+        }
         
         if (port != null) {
             connect(port);
@@ -70,6 +81,10 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
 
     }
 
+    public ArrayList<CommPortIdentifier> getPorts() {
+        return ports;
+    }
+    
     @Override
     public boolean connect(CommPortIdentifier objectPort) {
         try {
@@ -102,6 +117,40 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         }
         return false;
     }
+    
+    public boolean connect(CommPortIdentifier objectPort,int data_rate ) {
+        try {
+            //CommPortIdentifier port = (CommPortIdentifier) objectPort;
+            // open serial port, and use class name for the appName.
+            serialPort = (SerialPort) objectPort.open(this.getClass().getName(),
+                    TIME_OUT);
+            
+            // set port parameters
+            serialPort.setSerialPortParams(data_rate,
+                    SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
+
+        
+            // open the streams
+            input = serialPort.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
+            output = serialPort.getOutputStream();
+
+            // add event listeners
+            serialPort.addEventListener(this);
+            serialPort.notifyOnDataAvailable(true);            
+            
+            return true;
+            
+        } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
+            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
+            
+        }
+        return false;
+    }
+    
 
     @Override
     public void close() {
@@ -192,25 +241,25 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     }
     
     
-    public static void main(String[] args) {
-        
-        BluetoothCommunicator comm = new BluetoothCommunicator();
-        comm.initialize();  
-        
-        Thread t = new Thread(){
-
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1500);
-                    escreve(1);
-                } catch (InterruptedException ex) {                   
-                }                            
-            }     
-           };
-        t.start();
-        System.out.println("Start");
-//        comm.write(1);
-    }
-//    
+//    public static void main(String[] args) {
+//        
+//        BluetoothCommunicator comm = new BluetoothCommunicator();
+//        comm.initialize();  
+//        
+//        Thread t = new Thread(){
+//
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(1500);
+//                    escreve(1);
+//                } catch (InterruptedException ex) {                   
+//                }                            
+//            }     
+//           };
+//        t.start();
+//        System.out.println("Start");
+////        comm.write(1);
+//    }
+////    
 }

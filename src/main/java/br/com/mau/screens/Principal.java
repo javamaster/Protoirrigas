@@ -4,9 +4,13 @@
  */
 package br.com.mau.screens;
 
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
@@ -26,6 +30,11 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         setSize(1000, 800);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setBackgroundDesktopPane();
+        jDPCadastro.setEnabled(true);
+        centraliza(getAuthScreen());
+        //desabilita menus
+        disabledMenu();
     }
 
     /**
@@ -39,17 +48,18 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jDPCadastro = new javax.swing.JDesktopPane();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuBarMain = new javax.swing.JMenuBar();
+        menuUsuario = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuAgenda = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        jmenuComm = new javax.swing.JMenuItem();
+        menuSetor = new javax.swing.JMenu();
         jmenuCadastrarSetor = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
+        menuCultura = new javax.swing.JMenu();
         jmenuCadastrarCultura = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        menuRelatorios = new javax.swing.JMenu();
         jMIMercadorias = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,12 +78,12 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jDPCadastro, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
         );
 
-        jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        menuBarMain.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jMenu1.setText("Usuario");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        menuUsuario.setText("Usuario");
+        menuUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                menuUsuarioActionPerformed(evt);
             }
         });
 
@@ -84,14 +94,14 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        menuUsuario.add(jMenuItem1);
 
         jMenuItem3.setText("Editar Usuario");
-        jMenu1.add(jMenuItem3);
+        menuUsuario.add(jMenuItem3);
 
-        jMenuBar1.add(jMenu1);
+        menuBarMain.add(menuUsuario);
 
-        jMenu2.setText("Agenda");
+        menuAgenda.setText("Agenda");
 
         jMenuItem2.setText("Agendamento");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -99,11 +109,19 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        menuAgenda.add(jMenuItem2);
 
-        jMenuBar1.add(jMenu2);
+        jmenuComm.setText("Communication");
+        jmenuComm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuCommActionPerformed(evt);
+            }
+        });
+        menuAgenda.add(jmenuComm);
 
-        jMenu4.setText("Setor");
+        menuBarMain.add(menuAgenda);
+
+        menuSetor.setText("Setor");
 
         jmenuCadastrarSetor.setText("Cadastrar Setor");
         jmenuCadastrarSetor.addActionListener(new java.awt.event.ActionListener() {
@@ -111,11 +129,11 @@ public class Principal extends javax.swing.JFrame {
                 jmenuCadastrarSetorActionPerformed(evt);
             }
         });
-        jMenu4.add(jmenuCadastrarSetor);
+        menuSetor.add(jmenuCadastrarSetor);
 
-        jMenuBar1.add(jMenu4);
+        menuBarMain.add(menuSetor);
 
-        jMenu5.setText("Cultura");
+        menuCultura.setText("Cultura");
 
         jmenuCadastrarCultura.setText("Cadastrar Cultura");
         jmenuCadastrarCultura.addActionListener(new java.awt.event.ActionListener() {
@@ -123,14 +141,14 @@ public class Principal extends javax.swing.JFrame {
                 jmenuCadastrarCulturaActionPerformed(evt);
             }
         });
-        jMenu5.add(jmenuCadastrarCultura);
+        menuCultura.add(jmenuCadastrarCultura);
 
-        jMenuBar1.add(jMenu5);
+        menuBarMain.add(menuCultura);
 
-        jMenu3.setText("Relatorios");
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
+        menuRelatorios.setText("Relatorios");
+        menuRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
+                menuRelatoriosActionPerformed(evt);
             }
         });
 
@@ -140,11 +158,11 @@ public class Principal extends javax.swing.JFrame {
                 jMIMercadoriasActionPerformed(evt);
             }
         });
-        jMenu3.add(jMIMercadorias);
+        menuRelatorios.add(jMIMercadorias);
 
-        jMenuBar1.add(jMenu3);
+        menuBarMain.add(menuRelatorios);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBarMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,11 +196,11 @@ public class Principal extends javax.swing.JFrame {
                 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void menuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuUsuarioActionPerformed
 
        
         
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_menuUsuarioActionPerformed
 
     private void jMIMercadoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIMercadoriasActionPerformed
         
@@ -196,9 +214,9 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMIMercadoriasActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+    private void menuRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRelatoriosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    }//GEN-LAST:event_menuRelatoriosActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
@@ -229,6 +247,16 @@ public class Principal extends javax.swing.JFrame {
         gerenciadorCultura.setVisible(true);
         
     }//GEN-LAST:event_jmenuCadastrarCulturaActionPerformed
+
+    private void jmenuCommActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuCommActionPerformed
+        
+        JIFConnection conn = new JIFConnection();
+        jDPCadastro.add(conn);
+        
+        conn.setVisible(true);
+        
+        
+    }//GEN-LAST:event_jmenuCommActionPerformed
 
     public static void setLookAndFeelAtSystem(String lookandfeel, String Theme) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
         String lookAndFeel = null;
@@ -308,7 +336,7 @@ public class Principal extends javax.swing.JFrame {
     //        }
             //</editor-fold>
 //            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            setLookAndFeelAtSystem("Nimbus", null);
+            setLookAndFeelAtSystem("System", null);
 //            setLookAndFeelAtSystem("Metal", "");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -331,17 +359,66 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDPCadastro;
     private javax.swing.JMenuItem jMIMercadorias;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuItem jmenuCadastrarCultura;
     private javax.swing.JMenuItem jmenuCadastrarSetor;
+    private javax.swing.JMenuItem jmenuComm;
+    private javax.swing.JMenu menuAgenda;
+    private javax.swing.JMenuBar menuBarMain;
+    private javax.swing.JMenu menuCultura;
+    private javax.swing.JMenu menuRelatorios;
+    private javax.swing.JMenu menuSetor;
+    private javax.swing.JMenu menuUsuario;
     // End of variables declaration//GEN-END:variables
+    
+    
+    private void setBackgroundDesktopPane() {
+        
+        JLabel label = new JLabel(new ImageIcon(getClass().getResource("/br/images/jardins.jpg")));
+        
+        double altura = Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        double largura = Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        
+        int alt  = (int) altura;
+        int larg  = (int) largura;
+        
+        label.setBounds(0,0, larg,alt);
+               
+        jDPCadastro.add(label);
+    }
+
+    private JInternalFrame getAuthScreen() {
+        JIFAuth auth = new JIFAuth();
+        jDPCadastro.add(auth);        
+        auth.setVisible(true);        
+        return auth;
+    }
+
+    private void centraliza(JInternalFrame janela) {
+        int alturaPrincipal = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+        int larguraPrincipal =(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+        
+        int lIFrame = janela.getWidth();    
+        int aIFrame = janela.getHeight();    
+        
+        janela.setLocation((larguraPrincipal/2) - lIFrame/2 ,alturaPrincipal/2 - aIFrame/2);
+        
+        janela.setVisible(true);
+        
+        
+        //System.out.println("largura: "+larguraPrincipal+" Altura "+alturaPrincipal + "LargInternal: "+lIFrame+" AlturaInternal "+aIFrame);
+    }
+
+    public void disabledMenu() {
+        if(menuBarMain.isEnabled()){
+            menuUsuario.setEnabled(false);
+            menuAgenda.setEnabled(false);
+            menuCultura.setEnabled(false);
+            menuSetor.setEnabled(false);
+            menuRelatorios.setEnabled(false);
+        }
+    }
 }
