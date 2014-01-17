@@ -4,6 +4,7 @@
  */
 package br.com.mau.dao.impl;
 
+import br.com.mau.model.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -57,6 +58,11 @@ public class GenericDAO<PK, T> {
     
     public List<T> findByName(String name){
         return this.em.createQuery("Select e From " + classFind.getName()+ " e Where e.nome like '%"+name+"%'").getResultList();
+    }
+    
+    public T authenticate(String login, String senha){
+            return (T) this.em.createQuery("Select e From "+ classFind.getName() +" e "
+                    + "Where e.login = '"+login+"' and e.senha = '"+senha+"'").getSingleResult();
     }
     
     public void close(){

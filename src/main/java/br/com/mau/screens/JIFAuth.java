@@ -4,8 +4,18 @@
  */
 package br.com.mau.screens;
 
+import br.com.mau.dao.impl.GenericDAO;
+import br.com.mau.model.Usuario;
+import br.com.mau.util.JPAUtil;
 import java.awt.Toolkit;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -137,12 +147,19 @@ public class JIFAuth extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btCancelActionPerformed
 
     private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentMoved
-         setLocation((larguraPrincipal/2) - getWidth()/2 ,alturaPrincipal/2 - getHeight()/2);
+         centraliza();
     }//GEN-LAST:event_formComponentMoved
 
     private void btOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOkActionPerformed
         //
-        dispose();
+        boolean status = loadAndAutenticatePane();
+        if(status){
+            dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Login ou senha incorretos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btOkActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -159,12 +176,60 @@ public class JIFAuth extends javax.swing.JInternalFrame {
     
 private void centraliza() {
         alturaPrincipal = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-        larguraPrincipal =(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();        
+        larguraPrincipal =(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();  
+        setLocation((larguraPrincipal/2) - getWidth()/2 ,alturaPrincipal/2 - getHeight()/2);
 }
 
-private void enabledMenus() {
-
+private String md5(String senha, String algorithm){
+        
+            String sen = "";
+            MessageDigest md = null;
+         try {
+    
+                    md = MessageDigest.getInstance(algorithm);        
+                    BigInteger hash = new BigInteger(1, md.digest(senha.getBytes("UTF-8")));
+                    sen = hash.toString(16);
+                
+           
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(JIFAuth.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JIFAuth.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sen;
 }
+
+private boolean loadAndAutenticatePane() {
+
+    String login = null;
+
+    if(!tfLogin.getText().trim().isEmpty()){
+        login = tfLogin.getText().trim();
+    }
+    
+    String senha = null;
+    if(tfPassword.getPassword() != null) {
+        senha = new String(tfPassword.getPassword()).trim();
+    }
+   
+    if(login != null && senha != null){
+        //Cria um hash e compara no banco
+        String sen = md5(senha, "md5");            
+        Usuario authenticatedUser = null;
+        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Usuario.class);
+        try{
+           authenticatedUser = (Usuario) dao.authenticate(login, sen);
+        }catch(Exception e){
+            System.out.println("Nada Retornado");
+        }
+        System.out.println(sen);
+        if(authenticatedUser != null){
+            return true;
+        }            
+    }
+    return false;
+}
+
 
 }
 
