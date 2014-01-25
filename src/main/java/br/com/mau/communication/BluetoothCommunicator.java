@@ -35,6 +35,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
             "COM4", "COM7",// Windows   
+            "COM13","COM14",// Windows   
             "/dev/rfcomm0" // Ubuntu Bluetooth
     };
     private ArrayList<CommPortIdentifier> ports;
@@ -55,16 +56,16 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         String portName = "";
         ports = new ArrayList<CommPortIdentifier>();
         
-//        while (portIdentifers.hasMoreElements()) {            
-//            CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
-//            for (String name : PORT_NAMES) {
-//                if(currentPortId.getName().equals(name)){
-//                    port = currentPortId;
-//                    portName = name;
-//                    break;
-//                }
-//            }
-//        }
+        while (portIdentifers.hasMoreElements()) {            
+            CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
+            for (String name : PORT_NAMES) {
+                if(currentPortId.getName().equals(name)){
+                    port = currentPortId;
+                    portName = name;
+                    break;
+                }
+            }
+        }
         
         while (portIdentifers.hasMoreElements()) {      
             CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
@@ -182,11 +183,11 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             }
     }
     
-    public static synchronized void escreve(int cmd){
+    public static synchronized void escreve(String cmd){
         if(output != null){
             try {                                
-                output.write(cmd);
-                output.flush();
+                output.write(cmd.getBytes());
+                //output.flush();
                 
             } catch (IOException ex) {
                 Logger.getLogger(BluetoothCommunicator.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,20 +203,21 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         return a;
     }
 
+    @Override
     public synchronized void serialEvent(SerialPortEvent spe) {
         if(spe.getEventType() == SerialPortEvent.DATA_AVAILABLE){
             try {
                 
-//                int available = input.available();//                                
-//				byte chunk[] = new byte[available];//                                
-//				input.read(chunk, 0, available);//
-//                                String inputLine = new String(chunk);                                
+                int available = input.available();//                                
+				byte chunk[] = new byte[available];//                                
+				input.read(chunk, 0, available);//
+                                String inputLine = new String(chunk);                                
+                
+                                System.out.println(inputLine.toUpperCase());
+                
+//                String inputLine = reader.readLine();
 //                
-//                                System.out.println(inputLine.toUpperCase());
-                
-                String inputLine = reader.readLine();
-                
-                System.out.println(inputLine);
+//                System.out.println(inputLine);
                 //trataResposta(inputLine);
             } catch (IOException ex) {
                 try {
@@ -241,25 +243,40 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     }
     
     
-//    public static void main(String[] args) {
-//        
-//        BluetoothCommunicator comm = new BluetoothCommunicator();
-//        comm.initialize();  
-//        
-//        Thread t = new Thread(){
-//
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(1500);
+    public static void main(String[] args) {
+        
+        BluetoothCommunicator comm = new BluetoothCommunicator();
+        comm.initialize();  
+        
+        Thread t = new Thread(){
+
+            @Override
+            public void run() {
+         
+                try {
+                    Thread.sleep(1500);
 //                    escreve(1);
-//                } catch (InterruptedException ex) {                   
-//                }                            
-//            }     
-//           };
-//        t.start();
-//        System.out.println("Start");
-////        comm.write(1);
-//    }
-////    
+                } catch (InterruptedException ex) {  
+                    ex.printStackTrace();
+                }                            
+            }     
+           };
+        t.start();
+        System.out.println("Start");
+      //  comm.write(1);
+        
+//         while (true) {  
+//             try {
+//                    String txt = "a";
+//                    Thread.sleep(1500);
+//                    System.out.println(txt);
+//                    BluetoothCommunicator.escreve(txt);
+//                    
+//                } catch (InterruptedException ex) {  
+//                    ex.printStackTrace();
+//                }
+//            
+//        }
+    }
+//    
 }

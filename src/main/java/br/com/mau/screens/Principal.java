@@ -397,7 +397,7 @@ public class Principal extends javax.swing.JFrame {
         return auth;
     }
 
-    private void centraliza(JInternalFrame janela) {
+    public void centraliza(JInternalFrame janela) {
         int alturaPrincipal = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
         int larguraPrincipal =(int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
         
@@ -406,7 +406,6 @@ public class Principal extends javax.swing.JFrame {
         
         janela.setLocation((larguraPrincipal/2) - lIFrame/2 ,alturaPrincipal/2 - aIFrame/2);
         
-        janela.setVisible(true);
         
         
         //System.out.println("largura: "+larguraPrincipal+" Altura "+alturaPrincipal + "LargInternal: "+lIFrame+" AlturaInternal "+aIFrame);
@@ -421,4 +420,6 @@ public class Principal extends javax.swing.JFrame {
             menuRelatorios.setEnabled(false);
         }
     }
+    
+    
 }

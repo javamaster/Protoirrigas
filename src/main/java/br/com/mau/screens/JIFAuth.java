@@ -7,6 +7,7 @@ package br.com.mau.screens;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.model.Usuario;
 import br.com.mau.util.JPAUtil;
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -230,6 +231,15 @@ private boolean loadAndAutenticatePane() {
     return false;
 }
 
-
+public void acessar(){
+    Component c = this.getParent();
+    
+    if(c != null){
+        JFrame f = (JFrame) c;
+        
+        
+        
+    }
+}
 }
 
