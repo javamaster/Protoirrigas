@@ -24,8 +24,7 @@ public class ControlFileChooser {
               System.out.println("Diretorio retornado: "+path);
         }
         else{
-        
-            System.out.println("Cancelou");
+            System.out.println("Cancelou ou aconteceu um erro!!");
         }
     }
     
