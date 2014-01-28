@@ -5,16 +5,22 @@
 package br.com.mau.screens;
 
 import br.com.mau.dao.impl.GenericDAO;
-import br.com.mau.model.Cultura;
 import br.com.mau.model.Setor;
-import br.com.mau.tablemodel.CulturaTableModel;
 import br.com.mau.tablemodel.SetorTableModel;
 import br.com.mau.util.JPAUtil;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import prototirrigas.relatorios.DataExportExcel;
+import prototirrigas.relatorios.FileCustomFilter;
 
 /**
  *
@@ -28,6 +34,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
     public JIFGestaoSetor() {
         initComponents();
         listenerTable();
+        jbExportar.setVisible(false);
     }
 
     /**
@@ -49,6 +56,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
         jbExcluir = new javax.swing.JButton();
         jbPesquisar = new javax.swing.JButton();
         jbFechar = new javax.swing.JButton();
+        jbExportar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -82,7 +90,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -128,6 +136,13 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
             }
         });
 
+        jbExportar.setText("Exportar");
+        jbExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbExportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,7 +161,9 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
                         .addComponent(jbPesquisar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbFechar)
-                        .addGap(0, 74, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbExportar)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -154,7 +171,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbEditar, jbExcluir, jbFechar, jbNovo, jbPesquisar});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbEditar, jbExcluir, jbExportar, jbFechar, jbNovo, jbPesquisar});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,30 +188,32 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
                     .addComponent(jbEditar)
                     .addComponent(jbExcluir)
                     .addComponent(jbPesquisar)
-                    .addComponent(jbFechar))
+                    .addComponent(jbFechar)
+                    .addComponent(jbExportar))
                 .addGap(23, 23, 23))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jbEditar, jbExcluir, jbFechar, jbNovo, jbPesquisar});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jbEditar, jbExcluir, jbExportar, jbFechar, jbNovo, jbPesquisar});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPesquisarActionPerformed
         String pesquisaText = tfPesquisar.getText().trim();
-        ArrayList<Setor> setores = null;
+        this.setores = null;
         
         try {
             
         if(!pesquisaText.isEmpty()){
-            setores = FindCultureAtBase(pesquisaText);
+            this.setores = FindCultureAtBase(pesquisaText);            
         }
         else{        
-            setores = findAllCultures();
+            this.setores = findAllCultures();
         }                    
-            SetorTableModel tm = new SetorTableModel(setores);            
+            SetorTableModel tm = new SetorTableModel(this.setores);            
             jtSetores.setModel(tm);        
-        
+            habilitaExportarDados();
+            
         } catch (Exception e) {            
             e.printStackTrace();            
         }
@@ -238,6 +257,39 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
             show(s);
         }
     }//GEN-LAST:event_jbEditarActionPerformed
+
+    private void jbExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbExportarActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        FileCustomFilter filtro = new FileCustomFilter("excel files", new String[]{"xls"});
+        chooser.setFileFilter(filtro);
+        chooser.setAcceptAllFileFilterUsed(false);
+        
+        int result = chooser.showSaveDialog(null);
+       
+        if(result == JFileChooser.APPROVE_OPTION){
+            PrintWriter pw = null;
+            try {
+                
+                String filepath = chooser.getSelectedFile().getAbsolutePath();
+                
+                DataExportExcel excel = new DataExportExcel();
+                excel.expExcel(filepath, this.setores);
+                
+//                File file = chooser.getSelectedFile();
+//                pw = new PrintWriter(new FileWriter(file));
+//                pw.print("Texto salvo!!");
+//                pw.close();
+                
+            } catch (Exception ex) {
+                Logger.getLogger(JIFGestaoSetor.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                
+            }
+        }
+        else{
+            return;
+        }
+    }//GEN-LAST:event_jbExportarActionPerformed
 
     public Setor getSelectedSetor(){
         int line = getTable().getSelectedRow();
@@ -292,10 +344,19 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbEditar;
     private javax.swing.JButton jbExcluir;
+    private javax.swing.JButton jbExportar;
     private javax.swing.JButton jbFechar;
     private javax.swing.JButton jbNovo;
     private javax.swing.JButton jbPesquisar;
     private javax.swing.JTable jtSetores;
     private javax.swing.JTextField tfPesquisar;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<Setor> setores;
+    
+    
+    private void habilitaExportarDados() {
+        if(!setores.isEmpty()){
+           jbExportar.setVisible(true);
+        }
+    }
 }

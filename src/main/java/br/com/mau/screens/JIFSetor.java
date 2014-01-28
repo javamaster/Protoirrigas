@@ -9,13 +9,12 @@ import br.com.mau.model.Cultura;
 import br.com.mau.model.Setor;
 import br.com.mau.util.JPAUtil;
 import br.com.mau.validation.SetorValidator;
+import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import br.com.mau.controller.PersistenceController;
 
 /**
  *
@@ -32,6 +31,8 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         setSize(450,450);
         jbExcluir.setVisible(Boolean.FALSE);   
         validator = new SetorValidator();
+        persistenceController = new PersistenceController();
+        persistenceController.loadPersistenceContext();
     }
 
     /**
@@ -93,7 +94,6 @@ public class JIFSetor extends javax.swing.JInternalFrame {
 
         jLabel3.setText("cultura:");
 
-        cbCultura.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "not culture" }));
         cbCultura.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cbCulturaMouseClicked(evt);
@@ -270,7 +270,7 @@ public class JIFSetor extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar)
                     .addComponent(jbCancelar)
@@ -471,9 +471,17 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     private ArrayList<Cultura> storedCulturas;
     private Hashtable cults;
     private SetorValidator validator;
+    private PersistenceController persistenceController;
+    
+
+    @Override
+    public void computeVisibleRect(Rectangle visibleRect) {
+        super.computeVisibleRect(visibleRect);
+    }
+    
     
     private Cultura getCulturaByName(String name) {
-        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Cultura.class);
+        GenericDAO dao = new GenericDAO(persistenceController.getPersistenceContext(), Cultura.class);
         
         return (Cultura)dao.findByName(name).get(0);
     }
@@ -491,15 +499,15 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     }
 
     private void persistSetor(Setor s) {
-         GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Setor.class);
+         GenericDAO dao = new GenericDAO(persistenceController.getPersistenceContext(), Setor.class);
         if(s.getId() != null){
            dao.update(s);
            JOptionPane.showMessageDialog(null, "Setor Atualizado!!","Atualização",
-                JOptionPane.INFORMATION_MESSAGE);        
+           JOptionPane.INFORMATION_MESSAGE);        
         }else{
             dao.save(s);
             JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.INFORMATION_MESSAGE);
         }        
         dispose();
         dao.close();
