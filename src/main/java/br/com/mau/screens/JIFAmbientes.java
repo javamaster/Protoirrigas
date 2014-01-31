@@ -4,17 +4,42 @@
  */
 package br.com.mau.screens;
 
+import br.com.mau.communication.BluetoothCommunicator;
+import com.jhlabs.image.LightFilter;
+import gnu.io.CommPortIdentifier;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import br.com.mau.model.Ambiente;
+import br.com.mau.dao.impl.GenericDAO;
+import br.com.mau.controller.PersistenceController;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.validation.groups.Default;
+
+
 /**
  *
  * @author Mauricio
  */
 public class JIFAmbientes extends javax.swing.JInternalFrame {
 
+    int intervalo_logs = 60, contador = 0, intervalo = 20;
+    PersistenceController controller;
+    
     /**
      * Creates new form JIFAmbientes
      */
     public JIFAmbientes() {
         initComponents();
+        communicator = new BluetoothCommunicator();
+        controller = new PersistenceController();
+        controller.loadPersistenceContext();
+        btStop.setEnabled(false);
+        loadPorts();
     }
 
     /**
@@ -30,14 +55,20 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jtable_ambiente = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jedit_exibicoes = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        panelConfig = new javax.swing.JPanel();
+        labelImageStatus = new javax.swing.JLabel();
+        cbPortas = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        tfRate = new javax.swing.JTextField();
+        btStart = new javax.swing.JButton();
+        btStop = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        labelStatus = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -64,9 +95,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Ambientes");
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtable_ambiente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -85,25 +116,98 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-
-        jButton1.setText("Iniciar");
-
-        jButton2.setText("Parar");
-
-        jLabel1.setText("Porta:");
-
-        jLabel2.setText("ComX");
+        jScrollPane1.setViewportView(jtable_ambiente);
 
         jLabel3.setText("Limpar a cada");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jedit_exibicoes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jedit_exibicoesActionPerformed(evt);
             }
         });
 
         jLabel4.setText("exibições");
+
+        panelConfig.setBackground(new java.awt.Color(255, 255, 255));
+        panelConfig.setBorder(javax.swing.BorderFactory.createTitledBorder("config"));
+
+        labelImageStatus.setBackground(new java.awt.Color(255, 255, 255));
+        labelImageStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/no_connected.png"))); // NOI18N
+
+        cbPortas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbPortasActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Porta:");
+
+        jLabel15.setText("Rate:");
+
+        btStart.setText("START");
+        btStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btStartActionPerformed(evt);
+            }
+        });
+
+        btStop.setText("STOP");
+        btStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btStopActionPerformed(evt);
+            }
+        });
+
+        jLabel16.setText("Status:");
+
+        labelStatus.setText("ok");
+
+        javax.swing.GroupLayout panelConfigLayout = new javax.swing.GroupLayout(panelConfig);
+        panelConfig.setLayout(panelConfigLayout);
+        panelConfigLayout.setHorizontalGroup(
+            panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConfigLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(labelImageStatus)
+                .addGap(59, 59, 59)
+                .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfRate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbPortas, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28))
+        );
+        panelConfigLayout.setVerticalGroup(
+            panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConfigLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelImageStatus)
+                    .addGroup(panelConfigLayout.createSequentialGroup()
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(labelStatus))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btStart)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(cbPortas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tfRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15)
+                            .addComponent(btStop))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -111,46 +215,29 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addContainerGap())
+                .addContainerGap(339, Short.MAX_VALUE))
+            .addComponent(panelConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
-
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
 
@@ -267,7 +354,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -322,19 +409,157 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void jedit_exibicoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jedit_exibicoesActionPerformed
+        
+        intervalo = Integer.parseInt(jedit_exibicoes.getText());
+        
+    }//GEN-LAST:event_jedit_exibicoesActionPerformed
 
+    private void cbPortasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPortasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbPortasActionPerformed
+
+    private void btStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStartActionPerformed
+        //        showImageStatusConnection();
+        Object[] params = loadConnectionPane();
+
+        if (params != null){
+
+            Integer index = (Integer)params[2];
+
+            if(index != -1){
+                Integer rate = (Integer)params[1];
+                communicator.connect(portas.get(index), rate);
+                labelStatus.setText("established connection!!");
+                btStop.setEnabled(true);
+                btStart.setEnabled(false);
+            }
+        }
+        else{
+            labelStatus.setText("Error: Confira os valores!!");
+        }
+    }//GEN-LAST:event_btStartActionPerformed
+
+    private void btStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStopActionPerformed
+        if(communicator != null){
+            communicator.close();
+        }
+    }//GEN-LAST:event_btStopActionPerformed
+
+    private Object[] loadConnectionPane() {
+        String portaName = (String) cbPortas.getSelectedItem();
+        int index = cbPortas.getSelectedIndex();
+        Integer rate = null;
+        
+        if(!tfRate.getText().trim().isEmpty()){
+            rate = Integer.parseInt(tfRate.getText().trim());
+        }
+        
+        Object[] parametros = {portaName,rate,index};
+        
+        if(portaName != null && rate!=null){
+            return parametros;
+        }
+        return null;        
+    }
+    
+    private void loadPorts(){
+        
+        communicator.initialize();
+        portas = communicator.getPorts();
+        
+        if(!portas.isEmpty()){
+            for (CommPortIdentifier portId : portas){
+                cbPortas.addItem(portId.getName());                
+            }
+            labelStatus.setText("Comunicação Serial autorizada!!");
+        }
+        else{
+            labelStatus.setText("Nenhuma porta identificada!!");
+        }
+        
+    }
+    
+    public void task(){
+      long TEMPO = (1000 * intervalo_logs); // atualiza o site a cada 1 minuto  
+      
+      Timer timer = null;  
+      
+        if (timer == null) {  
+            timer = new Timer();  
+            
+            TimerTask tarefa = new TimerTask() {  
+
+                @Override
+                public void run() {  
+                    try {
+                        //Date date = new Date(); 
+                        //DateFormat formato = new SimpleDateFormat("HH:mm:ss");  
+                       // String formattedDate = formato.format(date);
+                      //  edt_contador.setText(formattedDate);
+//                        resposta = TesteComunicacao.SendClimaduino(umidade,temperatura ,edt_url.getText(),
+//                                jc_metodo_envio.getSelectedItem().toString(),edt_username.getText());
+//                        
+                        
+                        //System.out.println(formattedDate);
+                        //System.out.println("Teste agendador");  
+                        //chamar metodo  
+                        
+                        
+                        // Ler dados do banco
+                            GenericDAO dao = new GenericDAO(controller.getPersistenceContext(), Ambiente.class);
+                            ArrayList<Ambiente> ambientes = (ArrayList<Ambiente>) dao.findAll();
+                        //atualizar dados preechendo a tabela
+                        preencher_tabela(ambientes);
+                        
+                    } catch (Exception e) {  
+                        e.printStackTrace();  
+                    }  
+                }  
+            };  
+            
+            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);  
+        }  
+  }
+    
+    public void preencher_tabela(ArrayList<Ambiente> array){
+        
+        
+        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+        
+        if(contador==0) {
+            model.setNumRows(0);
+        }
+        
+        try {
+            for (int i = 0; i < array.size(); i++) {
+                
+                Ambiente a = array.get(i);
+                contador++;
+                DateFormat formato = new SimpleDateFormat("HH:mm:ss");  
+                String formattedDate = formato.format(a.getRecordDate());
+                
+                model.addRow(new Object[]{formattedDate,a.getHumidity(), 
+                a.getTemperature(),a.getLuminosity()});                
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,"Erro ao preencher tabela"+e);
+        }
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btStart;
+    private javax.swing.JButton btStop;
+    private javax.swing.JComboBox cbPortas;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -349,8 +574,6 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -359,5 +582,13 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField jedit_exibicoes;
+    private javax.swing.JTable jtable_ambiente;
+    private javax.swing.JLabel labelImageStatus;
+    private javax.swing.JLabel labelStatus;
+    private javax.swing.JPanel panelConfig;
+    private javax.swing.JTextField tfRate;
     // End of variables declaration//GEN-END:variables
+    private BluetoothCommunicator communicator;
+    private ArrayList<CommPortIdentifier> portas;
 }

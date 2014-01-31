@@ -20,6 +20,8 @@ public class Ambiente implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     
+    private float humidity;
+    
     private float luminosity;
     
     private float temperature;
@@ -33,6 +35,14 @@ public class Ambiente implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public float getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(float humidity) {
+        this.humidity = humidity;
     }
 
     public float getLuminosity() {

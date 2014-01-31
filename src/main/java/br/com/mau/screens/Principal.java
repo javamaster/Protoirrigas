@@ -363,10 +363,8 @@ public class Principal extends javax.swing.JFrame {
     private void jmenuCommActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuCommActionPerformed
         
         JIFConnection conn = new JIFConnection();
-        jDPCadastro.add(conn);
-        
-        conn.setVisible(true);
-        
+        jDPCadastro.add(conn);        
+        conn.setVisible(true);        
         
     }//GEN-LAST:event_jmenuCommActionPerformed
 

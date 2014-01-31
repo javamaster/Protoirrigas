@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
-/**
+/**     
  *
  * @author Mauricio
  */
@@ -147,7 +147,7 @@ public class JIFConnection extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 17, Short.MAX_VALUE))
         );
 
         pack();
@@ -168,12 +168,16 @@ public class JIFConnection extends javax.swing.JInternalFrame {
         Object[] params = loadConnectionPane();        
         
         if (params != null){            
+            
             Integer index = (Integer)params[2];
-            Integer rate = (Integer)params[1];
-            communicator.connect(portas.get(index), rate);
-            labelStatus.setText("established connection!!");
-            btStop.setEnabled(true);
-            btStart.setEnabled(false);
+            
+            if(index != -1){
+                Integer rate = (Integer)params[1];
+                communicator.connect(portas.get(index), rate);
+                labelStatus.setText("established connection!!");
+                btStop.setEnabled(true);
+                btStart.setEnabled(false);
+            }            
         }
         else{
             labelStatus.setText("Error: Confira os valores!!");
@@ -191,7 +195,6 @@ public class JIFConnection extends javax.swing.JInternalFrame {
             labelStatus.setText("Comunicação Serial autorizada!!");
         }
         else{
-            cbPortas.addItem("No Ports");
             labelStatus.setText("Nenhuma porta identificada!!");
         }
         
