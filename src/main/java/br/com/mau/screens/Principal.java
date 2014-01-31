@@ -82,7 +82,8 @@ public class Principal extends javax.swing.JFrame {
         menuCultura = new javax.swing.JMenu();
         jmenuCadastrarCultura = new javax.swing.JMenuItem();
         menuRelatorios = new javax.swing.JMenu();
-        jMIMercadorias = new javax.swing.JMenuItem();
+        menuAmbientes = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Cadastro");
@@ -277,15 +278,18 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jMIMercadorias.setText("Ambientes");
-        jMIMercadorias.addActionListener(new java.awt.event.ActionListener() {
+        menuAmbientes.setText("Ambientes");
+        menuAmbientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMIMercadoriasActionPerformed(evt);
+                menuAmbientesActionPerformed(evt);
             }
         });
-        menuRelatorios.add(jMIMercadorias);
+        menuRelatorios.add(menuAmbientes);
 
         menuBarMain.add(menuRelatorios);
+
+        jMenu1.setText("Ambiente");
+        menuBarMain.add(jMenu1);
 
         setJMenuBar(menuBarMain);
 
@@ -324,17 +328,19 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:     
     }//GEN-LAST:event_menuUsuarioActionPerformed
 
-    private void jMIMercadoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMIMercadoriasActionPerformed
-        // TODO add your handling code here:  
-    }//GEN-LAST:event_jMIMercadoriasActionPerformed
+    private void menuAmbientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAmbientesActionPerformed
+            JIFAmbientes ambientes = new JIFAmbientes();
+            jDPCadastro.add(ambientes);
+            ambientes.setVisible(true);
+    }//GEN-LAST:event_menuAmbientesActionPerformed
 
     private void menuRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRelatoriosActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_menuRelatoriosActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        JIFAgendamento agenda = new JIFAgendamento();
+        JIFGestaoAgenda agenda = new JIFGestaoAgenda();
         jDPCadastro.add(agenda);
         agenda.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -490,7 +496,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenuItem jMIMercadorias;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -501,6 +507,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmenuCadastrarSetor;
     private javax.swing.JMenuItem jmenuComm;
     private javax.swing.JMenu menuAgenda;
+    private javax.swing.JMenuItem menuAmbientes;
     private javax.swing.JMenuBar menuBarMain;
     private javax.swing.JMenu menuCultura;
     private javax.swing.JMenu menuRelatorios;

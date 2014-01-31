@@ -4,10 +4,13 @@
  */
 package br.com.mau.screens;
 
+import br.com.mau.model.Agenda;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+import br.com.mau.dao.impl.GenericDAO;
+import br.com.mau.controller.PersistenceController;
 
 /**
  *
@@ -20,6 +23,8 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
      */
     public JIFAgendamento() {
         initComponents();
+        persistence = new PersistenceController();
+        persistence.loadPersistenceContext();
     }
 
     /**
@@ -32,25 +37,26 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
+        panelAgendamento = new javax.swing.JPanel();
+        jboxSegunda = new javax.swing.JCheckBox();
+        jboxTerca = new javax.swing.JCheckBox();
+        jboxQuarta = new javax.swing.JCheckBox();
+        jboxQuinta = new javax.swing.JCheckBox();
+        jboxSexta = new javax.swing.JCheckBox();
+        jboxSabado = new javax.swing.JCheckBox();
+        jboxDomingo = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Date date = new Date();
         SpinnerDateModel sm = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        jSpinner1 = new javax.swing.JSpinner(sm);
-        SpinnerDateModel sm2 = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
-        spinnerTermino = new javax.swing.JSpinner(sm2);
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jspinnerInicial = new javax.swing.JSpinner(sm);
+        Date dateFinal = new Date();
+        SpinnerDateModel sm2 = new SpinnerDateModel(dateFinal, null, null, Calendar.HOUR_OF_DAY);
+        jspinnerTermino = new javax.swing.JSpinner(sm2);
+        jbSalvar = new javax.swing.JButton();
+        jbCancelar = new javax.swing.JButton();
+        panelTarefaBasica = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         tfNome = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -62,39 +68,39 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Agendamento");
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Agendamento", 0, 0, null, java.awt.Color.blue));
+        panelAgendamento.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Agendamento", 0, 0, null, java.awt.Color.blue));
 
-        jCheckBox1.setText("segunda");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        jboxSegunda.setText("segunda");
+        jboxSegunda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                jboxSegundaActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setText("terça-feira");
+        jboxTerca.setText("terça-feira");
 
-        jCheckBox3.setText("quarta-feira");
+        jboxQuarta.setText("quarta-feira");
 
-        jCheckBox4.setText("quinta-feira");
+        jboxQuinta.setText("quinta-feira");
 
-        jCheckBox5.setText("sexta-feira");
-        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
+        jboxSexta.setText("sexta-feira");
+        jboxSexta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox5ActionPerformed(evt);
+                jboxSextaActionPerformed(evt);
             }
         });
 
-        jCheckBox7.setText("sábado");
-        jCheckBox7.addActionListener(new java.awt.event.ActionListener() {
+        jboxSabado.setText("sábado");
+        jboxSabado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox7ActionPerformed(evt);
+                jboxSabadoActionPerformed(evt);
             }
         });
 
-        jCheckBox6.setText("domingo");
-        jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
+        jboxDomingo.setText("domingo");
+        jboxDomingo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox6ActionPerformed(evt);
+                jboxDomingoActionPerformed(evt);
             }
         });
 
@@ -102,98 +108,98 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Hora término:");
 
-        JSpinner.DateEditor de = new JSpinner.DateEditor(jSpinner1, "HH:mm:ss");
-        jSpinner1.setEditor(de);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(jspinnerInicial, "HH:mm:ss");
+        jspinnerInicial.setEditor(de);
 
-        JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinnerTermino, "HH:mm:ss");
-        spinnerTermino.setEditor(de2);
+        JSpinner.DateEditor de2 = new JSpinner.DateEditor(jspinnerTermino, "HH:mm:ss");
+        jspinnerTermino.setEditor(de2);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelAgendamentoLayout = new javax.swing.GroupLayout(panelAgendamento);
+        panelAgendamento.setLayout(panelAgendamentoLayout);
+        panelAgendamentoLayout.setHorizontalGroup(
+            panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAgendamentoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jCheckBox2))
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAgendamentoLayout.createSequentialGroup()
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jboxSegunda)
+                            .addComponent(jboxTerca))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox3)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jboxQuinta)
+                            .addComponent(jboxQuarta)))
+                    .addGroup(panelAgendamentoLayout.createSequentialGroup()
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAgendamentoLayout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(panelAgendamentoLayout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(21, 21, 21)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                            .addComponent(spinnerTermino))
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jspinnerInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                            .addComponent(jspinnerTermino))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(93, 93, 93)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox7)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox5)
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jboxSabado)
+                    .addGroup(panelAgendamentoLayout.createSequentialGroup()
+                        .addComponent(jboxSexta)
                         .addGap(31, 31, 31)
-                        .addComponent(jCheckBox6)))
+                        .addComponent(jboxDomingo)))
                 .addGap(62, 62, 62))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        panelAgendamentoLayout.setVerticalGroup(
+            panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAgendamentoLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6))
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jboxSegunda)
+                    .addComponent(jboxQuarta)
+                    .addComponent(jboxSexta)
+                    .addComponent(jboxDomingo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox7))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jboxTerca)
+                    .addComponent(jboxQuinta)
+                    .addComponent(jboxSabado))
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAgendamentoLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(panelAgendamentoLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jspinnerInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(spinnerTermino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jspinnerTermino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton1.setText("Salvar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jbSalvar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jbSalvar.setText("Salvar");
+        jbSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jbSalvarActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jButton2.setText("Cancelar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jbCancelar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jbCancelar.setText("Cancelar");
+        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jbCancelarActionPerformed(evt);
             }
         });
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tarefa Básica", 0, 0, null, new java.awt.Color(51, 102, 255)));
+        panelTarefaBasica.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tarefa Básica", 0, 0, null, new java.awt.Color(51, 102, 255)));
 
         jLabel4.setText("Nome:");
 
@@ -205,36 +211,36 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Use este assistente para agendar o inicio e o termino do processo de irrigação.");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelTarefaBasicaLayout = new javax.swing.GroupLayout(panelTarefaBasica);
+        panelTarefaBasica.setLayout(panelTarefaBasicaLayout);
+        panelTarefaBasicaLayout.setHorizontalGroup(
+            panelTarefaBasicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTarefaBasicaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(panelTarefaBasicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTarefaBasicaLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(26, 26, 26)
                         .addComponent(tfNome))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(panelTarefaBasicaLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(panelTarefaBasicaLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelTarefaBasicaLayout.setVerticalGroup(
+            panelTarefaBasicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTarefaBasicaLayout.createSequentialGroup()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelTarefaBasicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelTarefaBasicaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -247,33 +253,33 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelAgendamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelTarefaBasica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4))))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbCancelar, jbSalvar});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelTarefaBasica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jbCancelar, jbSalvar});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -287,7 +293,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -295,40 +301,32 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void jboxSegundaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxSegundaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_jboxSegundaActionPerformed
 
-    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
+    private void jboxSextaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxSextaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox5ActionPerformed
+    }//GEN-LAST:event_jboxSextaActionPerformed
 
-    private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
+    private void jboxDomingoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxDomingoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox6ActionPerformed
+    }//GEN-LAST:event_jboxDomingoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
+        Agenda agenda = getAgenda();
+        persistAgenda(agenda);        
+    }//GEN-LAST:event_jbSalvarActionPerformed
 
-    private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
+    private void jboxSabadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jboxSabadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox7ActionPerformed
+    }//GEN-LAST:event_jboxSabadoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbCancelarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -336,12 +334,61 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner spinnerTermino;
+    private javax.swing.JButton jbCancelar;
+    private javax.swing.JButton jbSalvar;
+    private javax.swing.JCheckBox jboxDomingo;
+    private javax.swing.JCheckBox jboxQuarta;
+    private javax.swing.JCheckBox jboxQuinta;
+    private javax.swing.JCheckBox jboxSabado;
+    private javax.swing.JCheckBox jboxSegunda;
+    private javax.swing.JCheckBox jboxSexta;
+    private javax.swing.JCheckBox jboxTerca;
+    private javax.swing.JSpinner jspinnerInicial;
+    private javax.swing.JSpinner jspinnerTermino;
+    private javax.swing.JPanel panelAgendamento;
+    private javax.swing.JPanel panelTarefaBasica;
     private javax.swing.JTextArea taDescricao;
     private javax.swing.JTextField tfNome;
     // End of variables declaration//GEN-END:variables
+    private PersistenceController persistence;
+    
+    public Agenda loadAgendaFromPanel(){
+        String nome= null;
+        
+        if(!tfNome.getText().trim().isEmpty()){
+            nome = tfNome.getText().trim();
+        }
+        
+        String descricao = null;
+        
+        if(!taDescricao.getText().trim().isEmpty()){
+            descricao = taDescricao.getText().trim();
+        }
+        
+        boolean[] dias = {jboxSegunda.isSelected(),jboxTerca.isSelected(),jboxQuarta.isSelected(),
+            jboxQuinta.isSelected(),jboxSexta.isSelected(),jboxSabado.isSelected(),jboxDomingo.isSelected()};
+        
+        SpinnerDateModel dateModelInicial = (SpinnerDateModel) jspinnerInicial.getModel();
+        Date inicialDate = dateModelInicial.getDate();
+        Calendar inicial = Calendar.getInstance();
+        inicial.setTime(inicialDate);
+        
+        SpinnerDateModel dateModelTermino = (SpinnerDateModel) jspinnerTermino.getModel();
+        Date terminoDate = dateModelTermino.getDate();
+        Calendar termino = Calendar.getInstance();
+        termino.setTime(terminoDate);
+        
+        return new Agenda(null, nome, descricao, dias, inicial ,termino);        
+    }
+    
+    public Agenda getAgenda(){
+        return loadAgendaFromPanel();
+    }
+
+    private void persistAgenda(Agenda agenda) {
+        GenericDAO dao = new GenericDAO(persistence.getPersistenceContext(), Agenda.class);
+        dao.save(agenda);
+    }
+    
 }

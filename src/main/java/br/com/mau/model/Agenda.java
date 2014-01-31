@@ -16,6 +16,9 @@ import javax.persistence.Temporal;
 @Entity
 @Table(name="agenda")
 public class Agenda implements Serializable {
+
+    
+    
     
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -23,12 +26,27 @@ public class Agenda implements Serializable {
     
     private String nome;
     
-    private String[] agenda;
+    private String descricao;
     
-    @Temporal(javax.persistence.TemporalType.DATE)
+    private boolean[] agenda;
+    
+    public Agenda() {
+    }
+
+    public Agenda(Long id, String nome, String decricao, boolean[] agenda, 
+                  Calendar hora_inicio, Calendar hora_fim) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.agenda = agenda;
+        this.hora_inicio = hora_inicio;
+        this.hora_fim = hora_fim;
+    }
+    
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar hora_inicio;
     
-    @Temporal(javax.persistence.TemporalType.DATE)  
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)  
     private Calendar hora_fim;
 
     public String getNome() {
@@ -39,11 +57,11 @@ public class Agenda implements Serializable {
         this.nome = nome;
     }
 
-    public String[] getAgenda() {
+    public boolean [] getAgenda() {
         return agenda;
     }
 
-    public void setAgenda(String[] agenda) {
+    public void setAgenda(boolean[] agenda) {
         this.agenda = agenda;
     }
 
@@ -70,4 +88,14 @@ public class Agenda implements Serializable {
     public void setHora_fim(Calendar hora_fim) {
         this.hora_fim = hora_fim;
     }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
+    
 }
