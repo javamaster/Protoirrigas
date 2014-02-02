@@ -1,6 +1,7 @@
 package br.com.mau.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Ambiente implements Serializable {
     
     private float temperature;
     
-    private Timestamp recordDate;
+    private Date recordDate;
     
 
     public Long getId() {
@@ -61,11 +62,11 @@ public class Ambiente implements Serializable {
         this.temperature = temperature;
     }
 
-    public Timestamp getRecordDate() {
+    public Date getRecordDate() {
         return recordDate;
     }
 
-    public void setRecordDate(Timestamp recordDate) {
+    public void setRecordDate(Date recordDate) {
         this.recordDate = recordDate;
     }
     

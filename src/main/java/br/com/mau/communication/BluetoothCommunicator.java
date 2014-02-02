@@ -21,6 +21,9 @@ import java.util.Enumeration;
 import java.util.TooManyListenersException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import br.com.mau.dao.impl.GenericDAO;
+import br.com.mau.controller.PersistenceController;
+import java.util.Date;
 
 /**
  * 
@@ -30,7 +33,10 @@ import java.util.logging.Logger;
 public class BluetoothCommunicator implements Communicator, SerialPortEventListener{
     
     private Ambiente a = new Ambiente();
+    private GenericDAO genericDAO;
+    private PersistenceController persistenceController;
     private SerialPort serialPort;
+    private String saida = "", humidity = "", temperature = "", luminosity = "";
     private static final String PORT_NAMES[] = {
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
@@ -45,6 +51,13 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     private static OutputStream output;
     private static final int TIME_OUT = 2000;   
     private static final int DATA_RATE = 9600;
+
+    public BluetoothCommunicator() {
+        persistenceController = new PersistenceController();
+        persistenceController.loadPersistenceContext();
+        this.genericDAO = new GenericDAO(persistenceController.getPersistenceContext(),
+        Ambiente.class);
+    }
     
     
 
@@ -61,25 +74,13 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             for (String name : PORT_NAMES) {
                 if(currentPortId.getName().equals(name)){
                     port = currentPortId;
+                    ports.add(currentPortId); 
                     portName = name;
                     break;
                 }
             }
         }
         
-        while (portIdentifers.hasMoreElements()) {      
-            CommPortIdentifier currentPortId = (CommPortIdentifier) portIdentifers.nextElement();
-            if(currentPortId != null){
-                ports.add(currentPortId); 
-            }            
-        }
-        
-        if (port != null) {
-            connect(port);
-            System.out.println("Sistema rodando na porta: "+port.getName());
-        }
-       
-
     }
 
     public ArrayList<CommPortIdentifier> getPorts() {
@@ -141,6 +142,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             // add event listeners
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);            
+            System.out.println("Sistema rodando na porta: "+serialPort.getName());
             
             return true;
             
@@ -205,78 +207,102 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
 
     @Override
     public synchronized void serialEvent(SerialPortEvent spe) {
+        
         if(spe.getEventType() == SerialPortEvent.DATA_AVAILABLE){
             try {
                 
                 int available = input.available();//                                
 				byte chunk[] = new byte[available];//                                
-				input.read(chunk, 0, available);//
-                                String inputLine = new String(chunk);                                
-                
-                                System.out.println(inputLine.toUpperCase());
-                
-//                String inputLine = reader.readLine();
-//                
-//                System.out.println(inputLine);
-                //trataResposta(inputLine);
-            } catch (IOException ex) {
+				//input.read(chunk, 0, available);//
+//                                String inputLine = new String(chunk);
+                                String inputLine = reader.readLine();
+                                
+                                System.out.println("reader: "+inputLine);                
+                               // System.out.println(inputLine.toUpperCase());
+                                Ambiente ambiente = trataResposta(inputLine);
+                                
+                                if(ambiente != null){
+                                    genericDAO.save(ambiente);
+                                    System.out.println("ambiente atual foi salvo!!");
+                                }
+                                else{
+                                    System.out.println("Nenhuma informação foi salva!!");
+                                }
+                                
+            } catch (Exception ex) {
                 try {
                     Thread.sleep(200);
-                } catch (Exception e) {
+                } catch (Exception e) {                    
+                    System.out.println("Error: "+ex.getMessage());
                 }
             }
         }
     }
 
-    private void trataResposta(String inputLine) {
-        switch (inputLine) {
-            case "l":
-                System.out.println("Systema está ligado");
-                break;
-            case "d":
-                System.out.println("Systema está desligado");
-                break;
-            case "r":
-                System.out.println("Systema retorna os dados do ambiente");
-                break;
-        }
+    private Ambiente trataResposta(String inputLine) {
+        
+        System.out.println(inputLine.length());
+        
+            if(inputLine.length() < 18){
+                                    
+                humidity = "";
+                temperature = "";
+                luminosity = "";
+                
+                humidity = saida.substring(saida.indexOf("U")+2,saida.indexOf("T")-1);
+                temperature = saida.substring(saida.indexOf("T")+2,saida.lastIndexOf(".")+2);
+                
+                System.out.println("humidity: "+ humidity +" - temperature"+ temperature);
+                
+               // luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
+                java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
+                
+                Ambiente ambiente = new Ambiente();
+                ambiente.setRecordDate(currentDate);
+                ambiente.setHumidity(Float.parseFloat(humidity));
+                ambiente.setTemperature(Float.parseFloat(temperature));
+                //a.setLuminosity(Float.parseFloat(luminosity));
+                
+                return ambiente;
+            }
+            return null;
     }
     
     
-    public static void main(String[] args) {
-        
-        BluetoothCommunicator comm = new BluetoothCommunicator();
-        comm.initialize();  
-        
-        Thread t = new Thread(){
-
-            @Override
-            public void run() {
-         
-                try {
-                    Thread.sleep(1500);
-//                    escreve(1);
-                } catch (InterruptedException ex) {  
-                    ex.printStackTrace();
-                }                            
-            }     
-           };
-        t.start();
-        System.out.println("Start");
-      //  comm.write(1);
-        
-//         while (true) {  
-//             try {
-//                    String txt = "a";
+//    public static void main(String[] args) {
+//        
+//        BluetoothCommunicator comm = new BluetoothCommunicator();
+//        comm.initialize();  
+//        
+//        Thread t = new Thread(){
+//
+//            @Override
+//            public void run() {
+//         
+//                try {
 //                    Thread.sleep(1500);
-//                    System.out.println(txt);
-//                    BluetoothCommunicator.escreve(txt);
-//                    
+////                    escreve(1);
 //                } catch (InterruptedException ex) {  
 //                    ex.printStackTrace();
-//                }
-//            
-//        }
-    }
-//    
+//                }                            
+//            }     
+//           };
+//        t.start();
+//        System.out.println("Start");
+//      //  comm.write(1);
+//        
+////         while (true) {  
+////             try {
+////                    String txt = "a";
+////                    Thread.sleep(1500);
+////                    System.out.println(txt);
+////                    BluetoothCommunicator.escreve(txt);
+////                    
+////                } catch (InterruptedException ex) {  
+////                    ex.printStackTrace();
+////                }
+////            
+////        }
+//    }
+////    
 }

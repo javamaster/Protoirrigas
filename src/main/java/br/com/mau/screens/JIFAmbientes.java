@@ -5,7 +5,6 @@
 package br.com.mau.screens;
 
 import br.com.mau.communication.BluetoothCommunicator;
-import com.jhlabs.image.LightFilter;
 import gnu.io.CommPortIdentifier;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -15,10 +14,8 @@ import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.validation.groups.Default;
 
 
 /**
@@ -443,6 +440,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private void btStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStopActionPerformed
         if(communicator != null){
             communicator.close();
+            btStop.setEnabled(false);
+            btStart.setEnabled(true);
+            labelStatus.setText("Sistema Desconectado!!");
         }
     }//GEN-LAST:event_btStopActionPerformed
 
@@ -470,7 +470,8 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         
         if(!portas.isEmpty()){
             for (CommPortIdentifier portId : portas){
-                cbPortas.addItem(portId.getName());                
+                cbPortas.addItem(portId.getName()); 
+                System.out.println("porta: "+portId.getName());
             }
             labelStatus.setText("Comunicação Serial autorizada!!");
         }
