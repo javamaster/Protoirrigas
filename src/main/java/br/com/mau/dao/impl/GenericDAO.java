@@ -4,7 +4,6 @@
  */
 package br.com.mau.dao.impl;
 
-import br.com.mau.model.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -65,6 +64,10 @@ public class GenericDAO<PK, T> {
                     + "Where e.login = '"+login+"' and e.senha = '"+senha+"'").getSingleResult();
     }
     
+     public Long getLastIdRecord(){
+        return (Long) this.em.createQuery("Select max(id) from "+classFind.getName()).getSingleResult();        
+    }
+     
     public void close(){
         this.em.close();
     }

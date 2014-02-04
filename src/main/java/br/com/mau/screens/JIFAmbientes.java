@@ -14,6 +14,7 @@ import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,8 +25,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JIFAmbientes extends javax.swing.JInternalFrame {
 
-    int intervalo_logs = 60, contador = 0, intervalo = 20;
-    PersistenceController controller;
+    private int intervalo_logs = 6, contador = 0, max_columns = 5;
+   
+    private PersistenceController persistenceController;  
+    
+    private static final int CONNECTED = 1, NOT_CONNECTED = 0;
     
     /**
      * Creates new form JIFAmbientes
@@ -33,10 +37,12 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     public JIFAmbientes() {
         initComponents();
         communicator = new BluetoothCommunicator();
-        controller = new PersistenceController();
-        controller.loadPersistenceContext();
+        persistenceController = new PersistenceController();
+        persistenceController.loadPersistenceContext();
         btStop.setEnabled(false);
+        limparTabela();
         loadPorts();
+        loadConnection();
     }
 
     /**
@@ -96,10 +102,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
         jtable_ambiente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Data", "Umidade", "Temperatura", "Luminosidade"
@@ -233,7 +236,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
@@ -351,7 +354,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(245, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -408,7 +411,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
     private void jedit_exibicoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jedit_exibicoesActionPerformed
         
-        intervalo = Integer.parseInt(jedit_exibicoes.getText());
+        max_columns = Integer.parseInt(jedit_exibicoes.getText());
         
     }//GEN-LAST:event_jedit_exibicoesActionPerformed
 
@@ -427,9 +430,12 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             if(index != -1){
                 Integer rate = (Integer)params[1];
                 communicator.connect(portas.get(index), rate);
-                labelStatus.setText("established connection!!");
+                labelStatus.setText("Conexão estabelecida!!");
+                changeConnectionIcon(CONNECTED);
                 btStop.setEnabled(true);
                 btStart.setEnabled(false);
+                //Atualizar a tabela de ambientes
+                timer = task();
             }
         }
         else{
@@ -443,6 +449,11 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             btStop.setEnabled(false);
             btStart.setEnabled(true);
             labelStatus.setText("Sistema Desconectado!!");
+            changeConnectionIcon(NOT_CONNECTED);
+        }
+        if(timer != null){
+            //Para a tarefa responsável pelo preenchimento da tabela de dados;
+            timer.cancel();
         }
     }//GEN-LAST:event_btStopActionPerformed
 
@@ -460,7 +471,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         if(portaName != null && rate!=null){
             return parametros;
         }
-        return null;        
+        return null;         
     }
     
     private void loadPorts(){
@@ -481,8 +492,8 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         
     }
     
-    public void task(){
-      long TEMPO = (1000 * intervalo_logs); // atualiza o site a cada 1 minuto  
+    public Timer task(){
+      long TEMPO = (1000 * intervalo_logs); 
       
       Timer timer = null;  
       
@@ -490,65 +501,100 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             timer = new Timer();  
             
             TimerTask tarefa = new TimerTask() {  
-
-                @Override
-                public void run() {  
-                    try {
-                        //Date date = new Date(); 
-                        //DateFormat formato = new SimpleDateFormat("HH:mm:ss");  
-                       // String formattedDate = formato.format(date);
-                      //  edt_contador.setText(formattedDate);
-//                        resposta = TesteComunicacao.SendClimaduino(umidade,temperatura ,edt_url.getText(),
-//                                jc_metodo_envio.getSelectedItem().toString(),edt_username.getText());
-//                        
-                        
-                        //System.out.println(formattedDate);
-                        //System.out.println("Teste agendador");  
-                        //chamar metodo  
-                        
-                        
-                        // Ler dados do banco
-                            GenericDAO dao = new GenericDAO(controller.getPersistenceContext(), Ambiente.class);
-                            ArrayList<Ambiente> ambientes = (ArrayList<Ambiente>) dao.findAll();
+            
+                GenericDAO dao = new GenericDAO(persistenceController.getPersistenceContext(), Ambiente.class);
+             
+              @Override
+              public void run() {  
+                try {
+                    
+                    Long lastID = null;
+                    Ambiente lastAmbiente = null;
+                 
+                    lastID = dao.getLastIdRecord();
+                    
+                    if(lastID != null){
+                        lastAmbiente = (Ambiente) dao.getByID(lastID);
                         //atualizar dados preechendo a tabela
-                        preencher_tabela(ambientes);
-                        
-                    } catch (Exception e) {  
-                        e.printStackTrace();  
-                    }  
+                        preencher_tabela(lastAmbiente);
+                    }                   
+                    
+                    if(contador == max_columns){
+                        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+                        model.setNumRows(0);     
+                        contador = 0;
+                    }
+                  
+                } catch (Exception e) {  
+                    e.printStackTrace(); 
                 }  
+              }  
             };  
             
-            timer.scheduleAtFixedRate(tarefa, TEMPO, TEMPO);  
-        }  
+            timer.scheduleAtFixedRate(tarefa, 0, TEMPO);  
+            
+        }
+        return timer;
   }
     
-    public void preencher_tabela(ArrayList<Ambiente> array){
+    public void preencher_tabela(Ambiente ambiente){
         
         
-        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+       DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
         
-        if(contador==0) {
-            model.setNumRows(0);
+        if(contador == 0) {
+            model.setNumRows(0);            
         }
         
-        try {
-            for (int i = 0; i < array.size(); i++) {
-                
-                Ambiente a = array.get(i);
+        try {            
                 contador++;
                 DateFormat formato = new SimpleDateFormat("HH:mm:ss");  
-                String formattedDate = formato.format(a.getRecordDate());
+                String formattedDate = formato.format(ambiente.getRecordDate());
                 
-                model.addRow(new Object[]{formattedDate,a.getHumidity(), 
-                a.getTemperature(),a.getLuminosity()});                
-            }
+                model.addRow(new Object[]{formattedDate,ambiente.getHumidity(), 
+                ambiente.getTemperature(),ambiente.getLuminosity()});                
+
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Erro ao preencher tabela"+e);
         }
     }
-
+    
+    private void limparTabela(){
+            DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+            model.setNumRows(0);
+            contador = 0;
+    }
+    
+     private void loadConnection() {
+        
+        if(status_connect == Boolean.TRUE){
+            
+            changeConnectionIcon(CONNECTED);
+            //habilita botao de parada e desabilita botao start
+            btStart.setEnabled(false);
+            btStop.setEnabled(true);
+            //inicia tarefa de preenchimento de tabela
+            timer = task();
+            
+        }
+    }
+     
+     private void changeConnectionIcon(int status) {
+       switch(status){
+           case CONNECTED:
+               labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_txrx.png")));        
+               status_connect = true;
+               break;
+           case NOT_CONNECTED:
+               labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_idle.png")));
+               status_connect = false;
+               break;
+           default:
+               throw new IllegalArgumentException("Option Not Exists!!");
+       }
+       
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btStart;
@@ -592,4 +638,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     private BluetoothCommunicator communicator;
     private ArrayList<CommPortIdentifier> portas;
+    private static GenericDAO dao;
+    private Timer timer;
+    private static boolean status_connect;
 }

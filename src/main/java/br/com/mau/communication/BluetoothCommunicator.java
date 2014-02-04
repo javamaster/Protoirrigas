@@ -122,10 +122,13 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     
     public boolean connect(CommPortIdentifier objectPort,int data_rate ) {
         try {
-            //CommPortIdentifier port = (CommPortIdentifier) objectPort;
+          //CommPortIdentifier port = (CommPortIdentifier) objectPort;
             // open serial port, and use class name for the appName.
+            
+            
             serialPort = (SerialPort) objectPort.open(this.getClass().getName(),
                     TIME_OUT);
+            
             
             // set port parameters
             serialPort.setSerialPortParams(data_rate,
@@ -244,7 +247,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         System.out.println(inputLine.length());
         
             if(inputLine.length() < 18){
-                                    
+                saida = inputLine;
                 humidity = "";
                 temperature = "";
                 luminosity = "";
@@ -252,7 +255,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 humidity = saida.substring(saida.indexOf("U")+2,saida.indexOf("T")-1);
                 temperature = saida.substring(saida.indexOf("T")+2,saida.lastIndexOf(".")+2);
                 
-                System.out.println("humidity: "+ humidity +" - temperature"+ temperature);
+                System.out.println("humidity: "+ humidity +" - temperature: "+ temperature);
                 
                // luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
                 java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
