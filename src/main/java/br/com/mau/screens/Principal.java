@@ -34,6 +34,7 @@ import javax.swing.plaf.metal.OceanTheme;
  */
 public class Principal extends javax.swing.JFrame {
 
+    public static final String MD5 = "md5", SHA1 ="sha1";
     /**
      * Creates new form Principal
      */
@@ -81,9 +82,8 @@ public class Principal extends javax.swing.JFrame {
         jmenuCadastrarSetor = new javax.swing.JMenuItem();
         menuCultura = new javax.swing.JMenu();
         jmenuCadastrarCultura = new javax.swing.JMenuItem();
-        menuRelatorios = new javax.swing.JMenu();
-        menuAmbientes = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        menuAmbiente = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Cadastro");
@@ -119,6 +119,11 @@ public class Principal extends javax.swing.JFrame {
         btCancel.setBackground(new java.awt.Color(102, 255, 102));
         btCancel.setForeground(new java.awt.Color(0, 102, 0));
         btCancel.setText("Cancel");
+        btCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Script MT Bold", 3, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 51));
@@ -213,6 +218,7 @@ public class Principal extends javax.swing.JFrame {
         });
         menuUsuario.add(jMenuItem1);
 
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/alter.png"))); // NOI18N
         jMenuItem3.setText("Editar Usuario");
         menuUsuario.add(jMenuItem3);
 
@@ -229,6 +235,7 @@ public class Principal extends javax.swing.JFrame {
 
         menuAgenda.setText("Agenda");
 
+        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/agendar.png"))); // NOI18N
         jMenuItem2.setText("Agendamento");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,25 +278,22 @@ public class Principal extends javax.swing.JFrame {
 
         menuBarMain.add(menuCultura);
 
-        menuRelatorios.setText("Relatorios");
-        menuRelatorios.addActionListener(new java.awt.event.ActionListener() {
+        menuAmbiente.setText("Ambiente");
+        menuAmbiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuRelatoriosActionPerformed(evt);
+                menuAmbienteActionPerformed(evt);
             }
         });
 
-        menuAmbientes.setText("Ambientes");
-        menuAmbientes.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem5.setText("Dados do ambiente");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuAmbientesActionPerformed(evt);
+                jMenuItem5ActionPerformed(evt);
             }
         });
-        menuRelatorios.add(menuAmbientes);
+        menuAmbiente.add(jMenuItem5);
 
-        menuBarMain.add(menuRelatorios);
-
-        jMenu1.setText("Ambiente");
-        menuBarMain.add(jMenu1);
+        menuBarMain.add(menuAmbiente);
 
         setJMenuBar(menuBarMain);
 
@@ -327,16 +331,6 @@ public class Principal extends javax.swing.JFrame {
     private void menuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuUsuarioActionPerformed
         // TODO add your handling code here:     
     }//GEN-LAST:event_menuUsuarioActionPerformed
-
-    private void menuAmbientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAmbientesActionPerformed
-            JIFAmbientes ambientes = new JIFAmbientes();
-            jDPCadastro.add(ambientes);
-            ambientes.setVisible(true);
-    }//GEN-LAST:event_menuAmbientesActionPerformed
-
-    private void menuRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRelatoriosActionPerformed
-        
-    }//GEN-LAST:event_menuRelatoriosActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
@@ -388,6 +382,20 @@ public class Principal extends javax.swing.JFrame {
     private void tfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSenhaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfSenhaActionPerformed
+
+    private void menuAmbienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAmbienteActionPerformed
+        
+    }//GEN-LAST:event_menuAmbienteActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+           JIFAmbientes ambientes = new JIFAmbientes();
+           jDPCadastro.add(ambientes);
+           ambientes.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
+            dispose();
+    }//GEN-LAST:event_btCancelActionPerformed
 
     public static void setLookAndFeelAtSystem(String lookandfeel, String Theme) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
         String lookAndFeel = null;
@@ -494,21 +502,20 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmenuCadastrarCultura;
     private javax.swing.JMenuItem jmenuCadastrarSetor;
     private javax.swing.JMenuItem jmenuComm;
     private javax.swing.JMenu menuAgenda;
-    private javax.swing.JMenuItem menuAmbientes;
+    private javax.swing.JMenu menuAmbiente;
     private javax.swing.JMenuBar menuBarMain;
     private javax.swing.JMenu menuCultura;
-    private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuSetor;
     private javax.swing.JMenu menuUsuario;
     private javax.swing.JPanel panelLogin;
@@ -561,7 +568,7 @@ public class Principal extends javax.swing.JFrame {
             menuAgenda.setEnabled(false);
             menuCultura.setEnabled(false);
             menuSetor.setEnabled(false);
-            menuRelatorios.setEnabled(false);
+            menuAmbiente.setEnabled(false);
             menuBarMain.setEnabled(false);
         }
     }
@@ -572,12 +579,12 @@ public class Principal extends javax.swing.JFrame {
             menuAgenda.setEnabled(true);
             menuCultura.setEnabled(true);
             menuSetor.setEnabled(true);
-            menuRelatorios.setEnabled(true);
+            menuAmbiente.setEnabled(true);
             menuBarMain.setEnabled(true);
         }
     }
 
-    private String md5(String senha, String algorithm){
+    public static String md5(String senha, String algorithm){
         
             String sen = "";
             MessageDigest md = null;
@@ -586,7 +593,6 @@ public class Principal extends javax.swing.JFrame {
                     md = MessageDigest.getInstance(algorithm);        
                     BigInteger hash = new BigInteger(1, md.digest(senha.getBytes("UTF-8")));
                     sen = hash.toString(16);
-                
            
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(JIFAuth.class.getName()).log(Level.SEVERE, null, ex);

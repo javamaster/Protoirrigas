@@ -256,9 +256,11 @@ public class JIFUser extends javax.swing.JInternalFrame {
         
         //Pegar os dados do usuario da tela de cadastro
         Usuario user = getUsuario();
-                
+        GenericDAO dao = null;
+        try {
+            
         if(user != null){        
-            GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Usuario.class);            
+            dao = new GenericDAO(JPAUtil.createEntityManager(), Usuario.class);            
             
             if(user.getId()!= null){
                 dao.update(user);
@@ -270,13 +272,17 @@ public class JIFUser extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
                 JOptionPane.INFORMATION_MESSAGE);
             }
-            //Liberar recursos do banco!!
-            dao.close();
         }else{
             JOptionPane.showMessageDialog(null, "Não pôde ser cadastrado!! Valores inválidos","Cadastro Efetuado",
                 JOptionPane.INFORMATION_MESSAGE);
         }
-        dispose();
+            dispose();
+        
+        } catch (Exception e) {
+            System.out.println("error: "+e.getMessage());
+        }finally{
+            dao.close();
+        }
     }//GEN-LAST:event_jbSalvarActionPerformed
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
@@ -327,26 +333,31 @@ public class JIFUser extends javax.swing.JInternalFrame {
         if(!tfNome.getText().trim().isEmpty()){
             nome = tfNome.getText().trim();
         }
-        char[] senha = null;
+        String senha = null;
         if(tpassSenha.getPassword().length != 0){
-            senha = tpassSenha.getPassword();
+            senha = new String (tpassSenha.getPassword());
         }
-        char[] confSenha = null;
+        String confSenha = null;
         if(jpassConfirmar.getPassword().length != 0){
-            confSenha = jpassConfirmar.getPassword();
+            confSenha = new String(jpassConfirmar.getPassword());
         }
         
         Boolean status = null;
         status = rbAtivo.isSelected();
         
         // verifica se os dados estão corretos;
-        Usuario user = new Usuario(id, nome, login, senha.toString(), "", status);
+        Usuario user = new Usuario(id, nome, login, senha, confSenha, "", status);
         
         return verificaUsuario(user);     
         
     }
 
     private Usuario verificaUsuario(Usuario user) {
-        return user;
+        if(user.getSenha().equals(user.getConfSenha())){
+            String senhaEncriptada = Principal.md5(user.getSenha(), Principal.MD5);
+            user.setSenha(senhaEncriptada);
+            return user;
+        }
+        return null;
     }
 }

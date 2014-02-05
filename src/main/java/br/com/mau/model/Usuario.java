@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,6 +36,9 @@ public class Usuario implements Serializable {
     @NotNull
     private String senha;
     
+    @Transient
+    private String confSenha;
+    
     private String foto;
     
     @NotNull
@@ -43,12 +47,13 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String login, String senha, String foto, Boolean status) {
+    public Usuario(Long id, String nome, String login, String senha,String conf, String foto, Boolean status) {
         this.id = id;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
         this.foto = foto;
+        this.confSenha = conf;
         this.status = status;
     }
     
@@ -86,6 +91,14 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    public String getConfSenha() {
+        return confSenha;
+    }
+
+    public void setConfSenha(String confSenha) {
+        this.confSenha = confSenha;
+    }
+    
     public Boolean getStatus() {
         return status;
     }

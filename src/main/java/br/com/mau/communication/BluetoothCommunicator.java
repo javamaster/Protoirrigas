@@ -122,9 +122,6 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     
     public boolean connect(CommPortIdentifier objectPort,int data_rate ) {
         try {
-          //CommPortIdentifier port = (CommPortIdentifier) objectPort;
-            // open serial port, and use class name for the appName.
-            
             
             serialPort = (SerialPort) objectPort.open(this.getClass().getName(),
                     TIME_OUT);
@@ -270,42 +267,5 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             }
             return null;
     }
-    
-    
-//    public static void main(String[] args) {
-//        
-//        BluetoothCommunicator comm = new BluetoothCommunicator();
-//        comm.initialize();  
-//        
-//        Thread t = new Thread(){
-//
-//            @Override
-//            public void run() {
-//         
-//                try {
-//                    Thread.sleep(1500);
-////                    escreve(1);
-//                } catch (InterruptedException ex) {  
-//                    ex.printStackTrace();
-//                }                            
-//            }     
-//           };
-//        t.start();
-//        System.out.println("Start");
-//      //  comm.write(1);
-//        
-////         while (true) {  
-////             try {
-////                    String txt = "a";
-////                    Thread.sleep(1500);
-////                    System.out.println(txt);
-////                    BluetoothCommunicator.escreve(txt);
-////                    
-////                } catch (InterruptedException ex) {  
-////                    ex.printStackTrace();
-////                }
-////            
-////        }
-//    }
-////    
+      
 }

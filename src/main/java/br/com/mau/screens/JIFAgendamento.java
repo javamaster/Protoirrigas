@@ -11,6 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -379,7 +381,9 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         Calendar termino = Calendar.getInstance();
         termino.setTime(terminoDate);
         
-        return new Agenda(null, nome, descricao, dias, inicial ,termino);        
+        
+        
+        return new Agenda(Long.MIN_VALUE, nome, descricao, dias, termino, termino);
     }
     
     public Agenda getAgenda(){
@@ -389,6 +393,21 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     private void persistAgenda(Agenda agenda) {
         GenericDAO dao = new GenericDAO(persistence.getPersistenceContext(), Agenda.class);
         dao.save(agenda);
+    }
+    
+    private ArrayList<Boolean> carregaDiasSemana(){
+        
+        ArrayList<Boolean> diasSemana = new ArrayList<Boolean>();
+        
+        diasSemana.add(jboxSegunda.isSelected());
+        diasSemana.add(jboxTerca.isSelected());
+        diasSemana.add(jboxQuarta.isSelected());
+        diasSemana.add(jboxQuinta.isSelected());
+        diasSemana.add(jboxSexta.isSelected());
+        diasSemana.add(jboxSabado.isSelected());
+        diasSemana.add(jboxDomingo.isSelected());
+        
+        return diasSemana;
     }
     
 }

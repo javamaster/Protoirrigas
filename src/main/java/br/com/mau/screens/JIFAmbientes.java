@@ -14,6 +14,7 @@ import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,9 +26,19 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JIFAmbientes extends javax.swing.JInternalFrame {
 
-    private int intervalo_logs = 6, contador = 0, max_columns = 5;
+    private int intervalo_logs = 6, contador = 0, max_columns = 15;
    
     private PersistenceController persistenceController;  
+    
+    private Date min_u_hora_hj = new Date();
+    
+    private Date max_u_hora_hj = new Date();
+    
+    private Date min_t_hora_hj = new Date();
+    
+    private Date max_t_hora_hj = new Date();
+    
+    private float min_u_valor_hj=0,max_u_valor_hj=0,min_t_valor_hj=0,max_t_valor_hj=0;
     
     private static final int CONNECTED = 1, NOT_CONNECTED = 0;
     
@@ -80,18 +91,18 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        edt_minima_hj_t_hora = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        edt_minima_hj_t_valor = new javax.swing.JTextField();
+        edt_maxima_hj_t_hora = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        edt_maxima_hj_t_valor = new javax.swing.JTextField();
+        edt_minima_hj_u_hora = new javax.swing.JTextField();
+        edt_maxima_hj_u_hora = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField9 = new javax.swing.JTextField();
+        edt_minima_hj_u_valor = new javax.swing.JTextField();
+        edt_maxima_hj_u_valor = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(204, 255, 204));
         setClosable(true);
@@ -236,7 +247,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
@@ -258,8 +269,6 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         jLabel10.setText("- maxima aferida: as");
 
         jLabel11.setText("foi");
-
-        jTextField4.setText("jTextField4");
 
         jLabel12.setText("foi");
 
@@ -287,34 +296,34 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel6)
                                         .addGap(14, 14, 14)))
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
+                                    .addComponent(edt_minima_hj_t_hora)
+                                    .addComponent(edt_maxima_hj_t_hora, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel9))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField6)
-                                    .addComponent(jTextField7))))
+                                    .addComponent(edt_minima_hj_u_hora)
+                                    .addComponent(edt_maxima_hj_u_hora))))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField8))
+                                .addComponent(edt_minima_hj_u_valor))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel11)
                                     .addComponent(jLabel12))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(edt_maxima_hj_t_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(edt_minima_hj_t_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -327,34 +336,34 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edt_minima_hj_t_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(edt_maxima_hj_t_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel11)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edt_minima_hj_t_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel12)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(edt_maxima_hj_t_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(27, 27, 27)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edt_minima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(edt_minima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edt_maxima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(245, Short.MAX_VALUE))
+                    .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(249, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -474,6 +483,62 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         return null;         
     }
     
+    private void verifica_mx_min(float temperatura, float umidade){
+        DateFormat formatedDate = new SimpleDateFormat("HH:mm:ss");
+        
+        if(min_u_valor_hj == 0){ // primeira execução
+            min_u_valor_hj = umidade;
+                max_u_valor_hj = umidade;
+                min_t_valor_hj = temperatura;
+                max_t_valor_hj = temperatura;
+                
+                min_u_hora_hj = new Date();
+                max_u_hora_hj = new Date();
+                min_t_hora_hj = new Date();
+                max_t_hora_hj = new Date(); 
+                
+                edt_minima_hj_u_hora.setText((String)formatedDate.format(min_u_hora_hj));
+                edt_minima_hj_u_valor.setText(""+min_u_valor_hj);
+                
+                edt_maxima_hj_u_hora.setText((String)formatedDate.format(max_u_hora_hj));
+                edt_maxima_hj_u_valor.setText(""+max_u_valor_hj);
+                
+                edt_minima_hj_t_hora.setText((String)formatedDate.format(min_t_hora_hj));
+                edt_minima_hj_t_valor.setText(""+min_t_valor_hj);
+                
+                edt_maxima_hj_t_hora.setText((String)formatedDate.format(max_t_hora_hj));
+                edt_maxima_hj_t_valor.setText(""+max_t_valor_hj);
+        }
+        
+        if(min_u_valor_hj < umidade){
+            min_u_valor_hj = umidade;
+            min_u_hora_hj = new Date();
+            edt_minima_hj_u_hora.setText(formatedDate.format(min_u_hora_hj));
+            edt_minima_hj_u_valor.setText(""+min_u_valor_hj);
+        }
+        if(max_u_valor_hj<umidade){
+                max_u_valor_hj = umidade;
+                max_u_hora_hj = new Date();
+                edt_maxima_hj_u_hora.setText((String)formatedDate.format(max_u_hora_hj));
+                edt_maxima_hj_u_valor.setText(""+max_u_valor_hj);
+        }
+        
+        if(min_t_valor_hj>temperatura){
+                min_t_valor_hj = temperatura;
+                min_t_hora_hj = new Date();
+                edt_minima_hj_t_hora.setText((String)formatedDate.format(min_t_hora_hj));
+                edt_minima_hj_t_valor.setText(""+min_t_valor_hj);
+        }
+        
+        if(max_t_valor_hj<umidade){
+            max_t_valor_hj = temperatura;
+            max_t_hora_hj = new Date();
+            edt_maxima_hj_t_hora.setText((String)formatedDate.format(max_t_hora_hj));
+            edt_maxima_hj_t_valor.setText(""+max_t_valor_hj);
+         }
+        
+    }
+    
     private void loadPorts(){
         
         communicator.initialize();
@@ -517,6 +582,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                         lastAmbiente = (Ambiente) dao.getByID(lastID);
                         //atualizar dados preechendo a tabela
                         preencher_tabela(lastAmbiente);
+                        verifica_mx_min(lastAmbiente.getTemperature(), lastAmbiente.getHumidity());
                     }                   
                     
                     if(contador == max_columns){
@@ -600,6 +666,14 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btStart;
     private javax.swing.JButton btStop;
     private javax.swing.JComboBox cbPortas;
+    private javax.swing.JTextField edt_maxima_hj_t_hora;
+    private javax.swing.JTextField edt_maxima_hj_t_valor;
+    private javax.swing.JTextField edt_maxima_hj_u_hora;
+    private javax.swing.JTextField edt_maxima_hj_u_valor;
+    private javax.swing.JTextField edt_minima_hj_t_hora;
+    private javax.swing.JTextField edt_minima_hj_t_valor;
+    private javax.swing.JTextField edt_minima_hj_u_hora;
+    private javax.swing.JTextField edt_minima_hj_u_valor;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -621,14 +695,6 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JTextField jedit_exibicoes;
     private javax.swing.JTable jtable_ambiente;
     private javax.swing.JLabel labelImageStatus;
