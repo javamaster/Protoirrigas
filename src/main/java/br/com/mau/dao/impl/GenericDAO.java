@@ -6,6 +6,7 @@ package br.com.mau.dao.impl;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -60,8 +61,11 @@ public class GenericDAO<PK, T> {
     }
     
     public T authenticate(String login, String senha){
-            return (T) this.em.createQuery("Select e From "+ classFind.getName() +" e "
-                    + "Where e.login = '"+login+"' and e.senha = '"+senha+"'").getSingleResult();
+       Query q =  em.createQuery("Select e from "+classFind.getName()+ " e where e.login = :login and e.senha = :senha");
+       q.setParameter("login", login);
+       q.setParameter("senha", senha);
+       
+       return (T) q.getSingleResult();             
     }
     
      public Long getLastIdRecord(){

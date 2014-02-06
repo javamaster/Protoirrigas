@@ -120,7 +120,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -247,7 +247,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
@@ -363,7 +363,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(edt_maxima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addContainerGap(253, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

@@ -7,6 +7,8 @@ package br.com.mau.screens;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.model.Usuario;
 import br.com.mau.util.JPAUtil;
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,6 +54,7 @@ public class JIFUser extends javax.swing.JInternalFrame {
         jpassConfirmar = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
         jlCodigo = new javax.swing.JLabel();
+        labelError = new javax.swing.JLabel();
 
         setClosable(true);
         setIconifiable(true);
@@ -73,7 +76,6 @@ public class JIFUser extends javax.swing.JInternalFrame {
         jLabel3.setLabelFor(tpassSenha);
         jLabel3.setText("Senha:");
 
-        tpassSenha.setText("jPasswordField1");
         tpassSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tpassSenhaActionPerformed(evt);
@@ -134,9 +136,9 @@ public class JIFUser extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Confirmar:");
 
-        jpassConfirmar.setText("jPasswordField1");
-
         jLabel7.setText("Codigo#");
+
+        labelError.setFont(new java.awt.Font("Times New Roman", 0, 8)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -179,7 +181,9 @@ public class JIFUser extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(jbSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jbCancelar))
+                        .addComponent(jbCancelar)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -220,7 +224,8 @@ public class JIFUser extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar)
-                    .addComponent(jbCancelar))
+                    .addComponent(jbCancelar)
+                    .addComponent(labelError))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -279,7 +284,8 @@ public class JIFUser extends javax.swing.JInternalFrame {
             dispose();
         
         } catch (Exception e) {
-            System.out.println("error: "+e.getMessage());
+            labelError.setBackground(Color.red);
+            labelError.setText("Preencha todos os campos");            
         }finally{
             dao.close();
         }
@@ -306,6 +312,7 @@ public class JIFUser extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbSalvar;
     private javax.swing.JLabel jlCodigo;
     private javax.swing.JPasswordField jpassConfirmar;
+    private javax.swing.JLabel labelError;
     private javax.swing.JRadioButton rbAtivo;
     private javax.swing.JRadioButton rbInativo;
     private javax.swing.JTextField tfLogin;

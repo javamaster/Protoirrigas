@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -255,13 +257,12 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 System.out.println("humidity: "+ humidity +" - temperature: "+ temperature);
                 
                // luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
-                java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
-                
+//                java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
+                Calendar c = Calendar.getInstance();                             
                 Ambiente ambiente = new Ambiente();
-                ambiente.setRecordDate(currentDate);
+                ambiente.setRecordDate(new java.util.Date(c.getTime().getTime()));
                 ambiente.setHumidity(Float.parseFloat(humidity));
                 ambiente.setTemperature(Float.parseFloat(temperature));
-                //a.setLuminosity(Float.parseFloat(luminosity));
                 
                 return ambiente;
             }
