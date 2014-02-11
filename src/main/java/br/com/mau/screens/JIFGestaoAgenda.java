@@ -3,6 +3,14 @@
  * and open the template in the editor.
  */
 package br.com.mau.screens;
+import br.com.mau.dao.impl.GenericDAO;
+import br.com.mau.model.Agenda;
+import br.com.mau.model.Setor;
+import javax.swing.JOptionPane;
+import br.com.mau.tablemodel.AgendaTableModel;
+import br.com.mau.util.JPAUtil;
+import java.util.ArrayList;
+import javax.swing.JTable;
 
 /**
  *
@@ -10,6 +18,8 @@ package br.com.mau.screens;
  */
 public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
 
+    private ArrayList<Agenda> listaAgendamento;
+    
     /**
      * Creates new form JIFGestaoAgenda
      */
@@ -28,35 +38,36 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtableAgenda = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jbNovo = new javax.swing.JButton();
+        jbtnAlterar = new javax.swing.JButton();
+        jbtnExcluir = new javax.swing.JButton();
+        jbtnFechar = new javax.swing.JButton();
+        jbtnAtualizar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Agendamento");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtableAgenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Nome", "Descricao", "Hora Inicial", "Hora Final"
+                "Nome", "Descricao", "Hora Inicial", "Hora Final", "Date"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jtableAgenda);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/agenda.jpg"))); // NOI18N
 
@@ -69,20 +80,60 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
             }
         });
 
+        jbtnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/alter.png"))); // NOI18N
+        jbtnAlterar.setText("Alterar");
+        jbtnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAlterarActionPerformed(evt);
+            }
+        });
+
+        jbtnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/trash.png"))); // NOI18N
+        jbtnExcluir.setText("Excluir");
+
+        jbtnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/cancel.png"))); // NOI18N
+        jbtnFechar.setText("Fechar");
+        jbtnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnFecharActionPerformed(evt);
+            }
+        });
+
+        jbtnAtualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/atualizar.png"))); // NOI18N
+        jbtnAtualizar.setText("Atualizar");
+        jbtnAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnAtualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbNovo)
-                    .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jbNovo)
+                            .addComponent(jLabel2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jbtnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnAtualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbtnFechar)))
                 .addContainerGap())
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbtnAlterar, jbtnAtualizar, jbtnExcluir, jbtnFechar});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -93,10 +144,18 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbNovo))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnAlterar)
+                    .addComponent(jbtnExcluir)
+                    .addComponent(jbtnFechar)
+                    .addComponent(jbtnAtualizar))
+                .addGap(27, 27, 27))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jbtnAlterar, jbtnAtualizar, jbtnExcluir, jbtnFechar});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,7 +168,9 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -121,12 +182,67 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
        agendamento.setVisible(true);
     }//GEN-LAST:event_jbNovoActionPerformed
 
+    private void jbtnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAlterarActionPerformed
+        Agenda agenda = getSelectedAgenda();
+        
+        if(agenda == null){
+            JOptionPane.showMessageDialog(null, "Selecione uma linha!!");
+        }
+        else{         
+            show(agenda);
+        }
+    }//GEN-LAST:event_jbtnAlterarActionPerformed
+
+    private void jbtnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnAtualizarActionPerformed
+        
+        listaAgendamento = findAllAgenda();
+        
+        if(listaAgendamento != null){
+            AgendaTableModel tm = new AgendaTableModel(listaAgendamento);
+            jtableAgenda.setModel(tm);
+        }
+    }//GEN-LAST:event_jbtnAtualizarActionPerformed
+
+    private void jbtnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnFecharActionPerformed
+        dispose();
+    }//GEN-LAST:event_jbtnFecharActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbNovo;
+    private javax.swing.JButton jbtnAlterar;
+    private javax.swing.JButton jbtnAtualizar;
+    private javax.swing.JButton jbtnExcluir;
+    private javax.swing.JButton jbtnFechar;
+    private javax.swing.JTable jtableAgenda;
     // End of variables declaration//GEN-END:variables
+
+
+    public void show(Agenda agenda){
+        JIFAgendamento frame = new JIFAgendamento();
+        frame.setAgenda(agenda);
+        frame.setTitle("Editar Agendamento");
+        getParent().add(frame);
+        frame.setVisible(true);
+    }
+
+    private Agenda getSelectedAgenda() {
+        int line = getTable().getSelectedRow();
+        if(line != -1){
+            return ((AgendaTableModel)getTable().getModel()).getSetorAt(line);
+        }
+        return null;
+    }
+    
+    public JTable getTable(){
+        return jtableAgenda;
+    }
+
+    private ArrayList<Agenda> findAllAgenda() {
+        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Agenda.class);
+        return (ArrayList<Agenda>) dao.findAll();
+    }
 }

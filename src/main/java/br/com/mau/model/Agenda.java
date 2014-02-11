@@ -1,7 +1,7 @@
 package br.com.mau.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,9 +17,6 @@ import javax.persistence.Temporal;
 @Table(name="agenda")
 public class Agenda implements Serializable {
 
-    
-    
-    
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -28,26 +25,27 @@ public class Agenda implements Serializable {
     
     private String descricao;
     
-    private boolean[] agenda;
+    private Date agenda;    
+    
+    @Temporal(javax.persistence.TemporalType.TIME)
+    private Date hora_inicio;
+    
+    @Temporal(javax.persistence.TemporalType.TIME)  
+    private Date hora_fim;
     
     public Agenda() {
     }
 
-    public Agenda(Long id, String nome, String decricao, boolean[] agenda, 
-                  Calendar hora_inicio, Calendar hora_fim) {
+     public Agenda(Long id, String nome, String decricao, Date date, 
+                  Date hora_inicio, Date hora_fim) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.agenda = agenda;
+        this.agenda = date;
         this.hora_inicio = hora_inicio;
         this.hora_fim = hora_fim;
     }
-    
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Calendar hora_inicio;
-    
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)  
-    private Calendar hora_fim;
+   
 
     public String getNome() {
         return nome;
@@ -57,11 +55,11 @@ public class Agenda implements Serializable {
         this.nome = nome;
     }
 
-    public boolean [] getAgenda() {
+    public Date getAgenda() {
         return agenda;
     }
 
-    public void setAgenda(boolean[] agenda) {
+    public void setAgenda(Date agenda) {
         this.agenda = agenda;
     }
 
@@ -73,19 +71,19 @@ public class Agenda implements Serializable {
         this.id = id;
     }
 
-    public Calendar getHora_inicio() {
+    public Date getHora_inicio() {
         return hora_inicio;
     }
 
-    public void setHora_inicio(Calendar hora_inicio) {
+    public void setHora_inicio(Date hora_inicio) {
         this.hora_inicio = hora_inicio;
     }
 
-    public Calendar getHora_fim() {
+    public Date getHora_fim() {
         return hora_fim;
     }
 
-    public void setHora_fim(Calendar hora_fim) {
+    public void setHora_fim(Date hora_fim) {
         this.hora_fim = hora_fim;
     }
 
