@@ -25,23 +25,23 @@ import org.quartz.impl.JobDetailImpl;
  *
  * @author Mauricio
  */
-public class Agendamento {
+public class Agendamento extends Thread{
     
     private Trigger trigger;
     private Job job;
-    private Scheduler scheduler = null;
     private SchedulerFactory factory;
     private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(Agendamento.class);
-    
+    private Scheduler scheduler = null;
+
+    public Agendamento() {
+        try {
+            this.scheduler = new StdSchedulerFactory().getScheduler();
+        } catch (SchedulerException ex) {
+            Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private Scheduler getEscalonador(){
-        if(scheduler == null){
-            try {
-                scheduler = new StdSchedulerFactory().getScheduler();
-            } catch (SchedulerException ex) {
-                log.error(ex.getMessage());
-            }
-        }
         return scheduler;
     }
     
@@ -79,11 +79,16 @@ public class Agendamento {
                        
             escalonador.scheduleJob(jobInicio, inicioTrigger);
             escalonador.scheduleJob(jobTermino, terminoTrigger);
-                        
+                                    
             escalonador.start();
+            
             log.debug("Escalonador iniciou o processo!!");
+            
+//            Thread.sleep(60L * 1000L);/            
+
+ 
         } catch (SchedulerException ex) {
-            log.error(ex.getMessage());
+           log.error(ex.getMessage());
         }
     }
     
@@ -98,6 +103,8 @@ public class Agendamento {
         
         return groups;
     }
+    
+    
     
     
 }

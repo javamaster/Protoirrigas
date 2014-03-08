@@ -66,7 +66,7 @@ public class AgendaTableModel extends AbstractTableModel{
         }
         return "";
     }
-    public Agenda getSetorAt(int index){
+    public Agenda getAgendaAt(int index){
         return listaAgenda.get(index);
     }
     

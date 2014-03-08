@@ -8,9 +8,10 @@ import br.com.mau.model.Ambiente;
  */
 public class ArduinoReceiver {
     
-    private boolean statusSystem = false;
+    private static boolean statusSystem = false;
     private BluetoothCommunicator communicator;
     public static final int ON = 1, OFF = 0, READ = 2;
+    
 
     public ArduinoReceiver() {
         communicator = new BluetoothCommunicator();
@@ -20,20 +21,28 @@ public class ArduinoReceiver {
     
     public boolean startSystem(){
         if(statusSystem == false){
-            communicator.write(ArduinoReceiver.ON);
-            System.out.println("Comando enviado: "+ArduinoReceiver.ON);
-            return true;
+            boolean connection = communicator.connect();
+            if(connection){                
+                communicator.write(ArduinoReceiver.ON);
+                System.out.println("Comando enviado: "+ArduinoReceiver.ON);
+                statusSystem = true;
+                return true;
+            }
+            else{
+                System.out.println("Não foi possivel se connectar!!");
+                return false;
+            }
         }
         return false;
     }
     
     public boolean stopSystem(){
         if(statusSystem){
-            communicator.write(ArduinoReceiver.OFF);
-            communicator.close();
-            return true;
-        }
-            
+                communicator.write(ArduinoReceiver.OFF);
+                communicator.close();
+                System.out.println("Comando enviado: "+ArduinoReceiver.OFF);
+                return true;         
+        }            
         return false;
     }
     
@@ -44,6 +53,10 @@ public class ArduinoReceiver {
            return a;
         }
         return null;
+    }
+    
+    public void close(){
+        communicator.close();
     }
     
 }

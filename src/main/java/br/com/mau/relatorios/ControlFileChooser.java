@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package prototirrigas.relatorios;
+package br.com.mau.relatorios;
 
 import javax.swing.JFileChooser;
 

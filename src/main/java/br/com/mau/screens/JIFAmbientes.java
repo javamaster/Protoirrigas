@@ -18,6 +18,10 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import br.com.mau.relatorios.DataExportExcel;
+import br.com.mau.relatorios.FileCustomFilter;
+import java.io.PrintWriter;
+import javax.swing.JFileChooser;
 
 
 /**
@@ -51,6 +55,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         persistenceController = new PersistenceController();
         persistenceController.loadPersistenceContext();
         btStop.setEnabled(false);
+        jbtnExportar.setEnabled(false);
         limparTabela();
         loadPorts();
         loadConnection();
@@ -83,6 +88,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         btStop = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         labelStatus = new javax.swing.JLabel();
+        jbtnExportar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -116,7 +122,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Data", "Umidade", "Temperatura", "Luminosidade"
+                "Data", "Umidade (solo)", "Temperatura (Celsius)", "Luminosidade (Lums)"
             }
         ) {
             Class[] types = new Class [] {
@@ -220,6 +226,14 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jbtnExportar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/excel.png"))); // NOI18N
+        jbtnExportar.setText("Exportar");
+        jbtnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnExportarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -232,7 +246,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addContainerGap(339, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jbtnExportar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(panelConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -246,8 +262,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(jbtnExportar))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
@@ -363,7 +380,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(edt_maxima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -466,6 +483,37 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btStopActionPerformed
 
+    private void jbtnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnExportarActionPerformed
+            
+            //Recupera do banco
+            ArrayList<Ambiente> ambientes = getHistoricoAmbientes();
+            DataExportExcel excel = null;
+            
+            if(ambientes != null){            
+                JFileChooser chooser = new JFileChooser();
+                FileCustomFilter filtro = new FileCustomFilter("excel files", new String[]{"xls"});
+                chooser.setFileFilter(filtro);
+                chooser.setAcceptAllFileFilterUsed(false);
+
+                    int result = chooser.showSaveDialog(null);
+
+                    if(result == JFileChooser.APPROVE_OPTION){
+                        PrintWriter pw = null;
+                        try {
+                            String filepath = chooser.getSelectedFile().getAbsolutePath();
+                            String pathName = null;
+
+                            excel = new DataExportExcel();
+                            excel.expExcel(pathName, ambientes);
+                            
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+        }
+       }
+            
+    }//GEN-LAST:event_jbtnExportarActionPerformed
+
     private Object[] loadConnectionPane() {
         String portaName = (String) cbPortas.getSelectedItem();
         int index = cbPortas.getSelectedIndex();
@@ -487,7 +535,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         DateFormat formatedDate = new SimpleDateFormat("HH:mm:ss");
         
         if(min_u_valor_hj == 0){ // primeira execução
-            min_u_valor_hj = umidade;
+                min_u_valor_hj = umidade;
                 max_u_valor_hj = umidade;
                 min_t_valor_hj = temperatura;
                 max_t_valor_hj = temperatura;
@@ -510,7 +558,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 edt_maxima_hj_t_valor.setText(""+max_t_valor_hj);
         }
         
-        if(min_u_valor_hj < umidade){
+        if(min_u_valor_hj > umidade){
             min_u_valor_hj = umidade;
             min_u_hora_hj = new Date();
             edt_minima_hj_u_hora.setText(formatedDate.format(min_u_hora_hj));
@@ -530,7 +578,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 edt_minima_hj_t_valor.setText(""+min_t_valor_hj);
         }
         
-        if(max_t_valor_hj<umidade){
+        if(max_t_valor_hj<temperatura){
             max_t_valor_hj = temperatura;
             max_t_hora_hj = new Date();
             edt_maxima_hj_t_hora.setText((String)formatedDate.format(max_t_hora_hj));
@@ -583,6 +631,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                         //atualizar dados preechendo a tabela
                         preencher_tabela(lastAmbiente);
                         verifica_mx_min(lastAmbiente.getTemperature(), lastAmbiente.getHumidity());
+                        jbtnExportar.setEnabled(true);
                     }                   
                     
                     if(contador == max_columns){
@@ -695,6 +744,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JButton jbtnExportar;
     private javax.swing.JTextField jedit_exibicoes;
     private javax.swing.JTable jtable_ambiente;
     private javax.swing.JLabel labelImageStatus;
@@ -707,4 +757,11 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     private static GenericDAO dao;
     private Timer timer;
     private static boolean status_connect;
+    private DataExportExcel exportExcel;
+
+    private ArrayList<Ambiente> getHistoricoAmbientes() {
+        dao = new GenericDAO(persistenceController.getPersistenceContext(), Ambiente.class);
+        
+        return (ArrayList<Ambiente>) dao.findAll();
+    }
 }

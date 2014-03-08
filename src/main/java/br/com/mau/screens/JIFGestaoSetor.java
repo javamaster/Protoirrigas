@@ -12,15 +12,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import prototirrigas.relatorios.DataExportExcel;
-import prototirrigas.relatorios.FileCustomFilter;
+import br.com.mau.relatorios.DataExportExcel;
+import br.com.mau.relatorios.FileCustomFilter;
 
 /**
  *
@@ -90,7 +88,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addGap(0, 20, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -136,6 +134,7 @@ public class JIFGestaoSetor extends javax.swing.JInternalFrame {
             }
         });
 
+        jbExportar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/excel.png"))); // NOI18N
         jbExportar.setText("Exportar");
         jbExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

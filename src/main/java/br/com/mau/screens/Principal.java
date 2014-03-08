@@ -7,8 +7,6 @@ package br.com.mau.screens;
 import br.com.mau.controller.PersistenceController;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.model.Usuario;
-import br.com.mau.util.JPAUtil;
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -77,7 +75,6 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         menuAgenda = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jmenuComm = new javax.swing.JMenuItem();
         menuSetor = new javax.swing.JMenu();
         jmenuCadastrarSetor = new javax.swing.JMenuItem();
         menuCultura = new javax.swing.JMenu();
@@ -244,18 +241,11 @@ public class Principal extends javax.swing.JFrame {
         });
         menuAgenda.add(jMenuItem2);
 
-        jmenuComm.setText("Communication");
-        jmenuComm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmenuCommActionPerformed(evt);
-            }
-        });
-        menuAgenda.add(jmenuComm);
-
         menuBarMain.add(menuAgenda);
 
         menuSetor.setText("Setor");
 
+        jmenuCadastrarSetor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/setor.jpg"))); // NOI18N
         jmenuCadastrarSetor.setText("Cadastrar Setor");
         jmenuCadastrarSetor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,6 +258,7 @@ public class Principal extends javax.swing.JFrame {
 
         menuCultura.setText("Cultura");
 
+        jmenuCadastrarCultura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/vegetal.jpg"))); // NOI18N
         jmenuCadastrarCultura.setText("Cadastrar Cultura");
         jmenuCadastrarCultura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,6 +276,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/blue.png"))); // NOI18N
         jMenuItem5.setText("Dados do ambiente");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -353,14 +345,6 @@ public class Principal extends javax.swing.JFrame {
         gerenciadorCultura.setVisible(true);
         
     }//GEN-LAST:event_jmenuCadastrarCulturaActionPerformed
-
-    private void jmenuCommActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuCommActionPerformed
-        
-        JIFConnection conn = new JIFConnection();
-        jDPCadastro.add(conn);        
-        conn.setVisible(true);        
-        
-    }//GEN-LAST:event_jmenuCommActionPerformed
 
     private void btEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEnterActionPerformed
         
@@ -511,7 +495,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmenuCadastrarCultura;
     private javax.swing.JMenuItem jmenuCadastrarSetor;
-    private javax.swing.JMenuItem jmenuComm;
     private javax.swing.JMenu menuAgenda;
     private javax.swing.JMenu menuAmbiente;
     private javax.swing.JMenuBar menuBarMain;

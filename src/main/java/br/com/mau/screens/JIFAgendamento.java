@@ -16,7 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
-import br.com.mau.util.Agendamento; 
+import br.com.mau.util.Agendamento;
+import java.util.List;
 
 /**
  *
@@ -24,7 +25,8 @@ import br.com.mau.util.Agendamento;
  */
 public class JIFAgendamento extends javax.swing.JInternalFrame {
 
-   private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(JIFAgendamento.class);
+    private static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(JIFAgendamento.class);
+
     /**
      * Creates new form JIFAgendamento
      */
@@ -35,15 +37,13 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
             persistence.loadPersistenceContext();
             MaskFormatter formatter = new MaskFormatter("##/##/####");
             formatter.setPlaceholderCharacter('_');
-            
+
             formattedTextField = new JFormattedTextField(formatter);
-            
-            
-            
+
         } catch (ParseException ex) {
             Logger.getLogger(JIFAgendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     /**
@@ -251,7 +251,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap(35, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
@@ -261,23 +261,21 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
     private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
         Agenda agenda = getAgenda();
-        
-        if(agenda != null){
-            persistAgenda(agenda);            
+
+        if (agenda != null) {
+            persistAgenda(agenda);
             registerAgenda(agenda);
             dispose();
-        }
-        else{
+        } else {
             labelStatus.setText("** É necessario preencher todos os campos");
             log.error("Não foi possivel salvar agendamento - alguns valores estão nulos");
-        }        
-       
+        }
+
     }//GEN-LAST:event_jbSalvarActionPerformed
 
     private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
         dispose();
     }//GEN-LAST:event_jbCancelarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser jDateChooser;
     private javax.swing.JLabel jLabel1;
@@ -301,64 +299,69 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     private PersistenceController persistence;
     private JFormattedTextField formattedTextField;
-    
-    public Agenda loadAgendaFromPanel(){
-        String nome= null;
-        
-        if(!tfNome.getText().trim().isEmpty()){
+
+    public Agenda loadAgendaFromPanel() {
+        String nome = null;
+
+        if (!tfNome.getText().trim().isEmpty()) {
             nome = tfNome.getText().trim();
         }
-        
+
         String descricao = null;
-        
-        if(!taDescricao.getText().trim().isEmpty()){
+
+        if (!taDescricao.getText().trim().isEmpty()) {
             descricao = taDescricao.getText().trim();
         }
-        
-        Date data = null;        
-        
-        if(jDateChooser.getDate() != null){
+
+        Date data = null;
+
+        if (jDateChooser.getDate() != null) {
             data = jDateChooser.getDate();
         }
-               
+
         SpinnerDateModel dateModelInicial = (SpinnerDateModel) jspinnerInicial.getModel();
         Date inicialDate = dateModelInicial.getDate();
-        Calendar inicial = Calendar.getInstance();        
+        Calendar inicial = Calendar.getInstance();
         inicial.setTime(inicialDate);
-        
+
         SpinnerDateModel dateModelTermino = (SpinnerDateModel) jspinnerTermino.getModel();
         Date terminoDate = dateModelTermino.getDate();
         Calendar termino = Calendar.getInstance();
-        termino.setTime(terminoDate);           
-        
-        if(nome == null || data == null){
+        termino.setTime(terminoDate);
+
+        if (nome == null || data == null) {
             return null;
         }
         return new Agenda(null, nome, descricao, data, inicial.getTime(), termino.getTime());
     }
-    
-    
-    public Agenda getAgenda(){
+
+    public Agenda getAgenda() {
         return loadAgendaFromPanel();
     }
 
     private void persistAgenda(Agenda agenda) {
         GenericDAO dao = new GenericDAO(persistence.getPersistenceContext(), Agenda.class);
-        dao.save(agenda);
+        List<Agenda> listAgenda = dao.findByName(agenda.getNome());
+        
+        if(!listAgenda.isEmpty()){
+           dao.update(agenda);
+        }
+        else{
+            dao.save(agenda);
+        }
+                
     }
 
     private void registerAgenda(Agenda agenda) {
         Agendamento agendamento = new Agendamento();
-        System.out.println("Qtde: "+agendamento.getJobGroupNames().size());
+        System.out.println("Qtde: " + agendamento.getJobGroupNames().size());
         agendamento.escalonarAgenda(agenda);
-        
     }
-    
-    
-    public void setAgenda(Agenda agenda){
+
+    public void setAgenda(Agenda agenda) {
         resetForm();
-        if(agenda != null){
-            populaSetor(agenda);            
+        if (agenda != null) {
+            populaSetor(agenda);
         }
     }
 
@@ -372,13 +375,11 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         tfNome.setText(agenda.getNome());
         taDescricao.setText(agenda.getDescricao());
         jDateChooser.setDate(agenda.getAgenda());
-        
+
         SpinnerDateModel sm = new SpinnerDateModel(agenda.getHora_inicio(), null, null, Calendar.HOUR_OF_DAY);
         jspinnerInicial = new javax.swing.JSpinner(sm);
         JSpinner.DateEditor de = new JSpinner.DateEditor(jspinnerInicial, "HH:mm:ss");
         jspinnerInicial.setEditor(de);
 
     }
-    
-    
 }

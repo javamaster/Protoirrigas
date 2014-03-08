@@ -90,6 +90,11 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
 
         jbtnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/trash.png"))); // NOI18N
         jbtnExcluir.setText("Excluir");
+        jbtnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnExcluirActionPerformed(evt);
+            }
+        });
 
         jbtnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/cancel.png"))); // NOI18N
         jbtnFechar.setText("Fechar");
@@ -144,7 +149,7 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbNovo))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,6 +212,24 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jbtnFecharActionPerformed
 
+    private void jbtnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnExcluirActionPerformed
+        
+        GenericDAO dao = new GenericDAO(JPAUtil.createEntityManager(), Agenda.class);
+        Agenda agenda = getSelectedAgenda();
+        if(agenda == null){
+            JOptionPane.showMessageDialog(null, "Selecione uma linha!!");
+        }
+        else{
+            int resp = JOptionPane.showConfirmDialog(null, "Deseja realmente Excluir?", "Exclusão",
+                    JOptionPane.YES_NO_OPTION);
+
+            if(resp == JOptionPane.YES_OPTION){
+                dao.delete(agenda.getId());
+            }
+        }
+        
+    }//GEN-LAST:event_jbtnExcluirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -232,7 +255,7 @@ public class JIFGestaoAgenda extends javax.swing.JInternalFrame {
     private Agenda getSelectedAgenda() {
         int line = getTable().getSelectedRow();
         if(line != -1){
-            return ((AgendaTableModel)getTable().getModel()).getSetorAt(line);
+            return ((AgendaTableModel)getTable().getModel()).getAgendaAt(line);
         }
         return null;
     }

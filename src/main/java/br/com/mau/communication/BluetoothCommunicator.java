@@ -43,7 +43,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
             "COM4", "COM7",// Windows   
-            "COM13","COM14",// Windows   
+            "COM13","COM14","COM40",// Windows   
             "/dev/rfcomm0" // Ubuntu Bluetooth
     };
     private ArrayList<CommPortIdentifier> ports;
@@ -53,6 +53,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     private static OutputStream output;
     private static final int TIME_OUT = 2000;   
     private static final int DATA_RATE = 9600;
+    private CommPortIdentifier port;
 
     public BluetoothCommunicator() {
         persistenceController = new PersistenceController();
@@ -61,13 +62,11 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         Ambiente.class);
     }
     
-    
-
     @Override
     public void initialize() {
         Enumeration portIdentifers = getAvailablePorts();
         
-        CommPortIdentifier port = null;
+        port = null;
         String portName = "";
         ports = new ArrayList<CommPortIdentifier>();
         
@@ -82,52 +81,26 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 }
             }
         }
-        
-    }
+      }
 
     public ArrayList<CommPortIdentifier> getPorts() {
         return ports;
     }
     
-    @Override
-    public boolean connect(CommPortIdentifier objectPort) {
-        try {
-            //CommPortIdentifier port = (CommPortIdentifier) objectPort;
-            // open serial port, and use class name for the appName.
-            serialPort = (SerialPort) objectPort.open(this.getClass().getName(),
-                    TIME_OUT);
-            
-            // set port parameters
-            serialPort.setSerialPortParams(DATA_RATE,
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE);
-
+    public boolean connect() {
         
-            // open the streams
-            input = serialPort.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
-            output = serialPort.getOutputStream();
-
-            // add event listeners
-            serialPort.addEventListener(this);
-            serialPort.notifyOnDataAvailable(true);            
-            
-            return true;
-            
-        } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
-            e.printStackTrace();
-            System.out.println("Error: "+e.getMessage());
-        }
-        return false;
+          if(this.port != null){              
+              connect(port);
+              return true;
+          }          
+          return false;        
+        
     }
     
     public boolean connect(CommPortIdentifier objectPort,int data_rate ) {
-        try {
-            
+        try {            
             serialPort = (SerialPort) objectPort.open(this.getClass().getName(),
-                    TIME_OUT);
-            
+                    TIME_OUT);            
             
             // set port parameters
             serialPort.setSerialPortParams(data_rate,
@@ -151,7 +124,6 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
             e.printStackTrace();
             System.out.println("Error: "+e.getMessage());
-            
         }
         return false;
     }
@@ -215,9 +187,9 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 
                 int available = input.available();//                                
 				byte chunk[] = new byte[available];//                                
-				//input.read(chunk, 0, available);//
-//                                String inputLine = new String(chunk);
-                                String inputLine = reader.readLine();
+				input.read(chunk, 0, available);//
+                                String inputLine = new String(chunk);
+                               // String inputLine = reader.readLine();
                                 
                                 System.out.println("reader: "+inputLine);                
                                // System.out.println(inputLine.toUpperCase());
@@ -267,6 +239,41 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 return ambiente;
             }
             return null;
+    }
+
+    @Override
+    public boolean connect(CommPortIdentifier port) {
+        try {
+            //CommPortIdentifier port = (CommPortIdentifier) objectPort;
+            // open serial port, and use class name for the appName.
+            serialPort = (SerialPort) this.port.open(this.getClass().getName(),
+                    TIME_OUT);
+            
+            // set port parameters
+            serialPort.setSerialPortParams(DATA_RATE,
+                    SerialPort.DATABITS_8,
+                    SerialPort.STOPBITS_1,
+                    SerialPort.PARITY_NONE);
+
+        
+            // open the streams
+            input = serialPort.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
+            output = serialPort.getOutputStream();
+            
+
+            // add event listeners
+            serialPort.addEventListener(this);
+            serialPort.notifyOnDataAvailable(true);            
+            System.out.println("Sistema rodando na porta: "+serialPort.getName());
+            
+            return true;
+            
+        } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
+            e.printStackTrace();
+            System.out.println("Error: "+e.getMessage());
+        }
+        return false;
     }
       
 }

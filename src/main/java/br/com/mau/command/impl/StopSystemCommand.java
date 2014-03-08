@@ -16,8 +16,10 @@ public class StopSystemCommand implements Command{
     private ArduinoReceiver receiver = new ArduinoReceiver();
             
     @Override
-    public void execute() {
-        receiver.stopSystem();
-    }
-    
+    public void execute() {       
+        boolean result = receiver.stopSystem();
+        if (!result) {
+            System.out.println("Não foi possivel se conectar");
+        }
+    }    
 }

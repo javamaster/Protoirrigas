@@ -7,7 +7,6 @@ package br.com.mau.command.impl;
 import br.com.mau.command.ArduinoReceiver;
 import br.com.mau.command.Command;
 import br.com.mau.model.Ambiente;
-import java.util.Enumeration;
 
 /**
  *
