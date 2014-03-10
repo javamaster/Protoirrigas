@@ -501,10 +501,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                         PrintWriter pw = null;
                         try {
                             String filepath = chooser.getSelectedFile().getAbsolutePath();
-                            String pathName = null;
 
                             excel = new DataExportExcel();
-                            excel.expExcel(pathName, ambientes);
+                            excel.expExcel(filepath, ambientes);
                             
                         }catch(Exception e){
                             e.printStackTrace();
@@ -594,8 +593,8 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         
         if(!portas.isEmpty()){
             for (CommPortIdentifier portId : portas){
-                cbPortas.addItem(portId.getName()); 
-                System.out.println("porta: "+portId.getName());
+                cbPortas.addItem(portId.getName());
+                System.out.println("Porta: "+portId.getName());
             }
             labelStatus.setText("Comunicação Serial autorizada!!");
         }

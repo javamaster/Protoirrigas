@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 import br.com.mau.util.Agendamento;
-import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -68,6 +68,8 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         jspinnerTermino = new javax.swing.JSpinner(sm2);
         jDateChooser = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jlcodigo = new javax.swing.JLabel();
         jbSalvar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
         panelTarefaBasica = new javax.swing.JPanel();
@@ -97,23 +99,30 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Data:");
 
+        jLabel8.setText("codigo#:");
+
         javax.swing.GroupLayout panelAgendamentoLayout = new javax.swing.GroupLayout(panelAgendamento);
         panelAgendamento.setLayout(panelAgendamentoLayout);
         panelAgendamentoLayout.setHorizontalGroup(
             panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAgendamentoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addGroup(panelAgendamentoLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jspinnerInicial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                    .addComponent(jspinnerTermino, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jspinnerInicial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                        .addComponent(jspinnerTermino, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlcodigo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAgendamentoLayout.setVerticalGroup(
@@ -131,7 +140,11 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
                 .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jspinnerTermino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(61, 61, 61)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelAgendamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jlcodigo))
+                .addGap(36, 36, 36)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -228,8 +241,8 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(panelTarefaBasica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,7 +264,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
@@ -285,10 +298,12 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbSalvar;
+    private javax.swing.JLabel jlcodigo;
     private javax.swing.JSpinner jspinnerInicial;
     private javax.swing.JSpinner jspinnerTermino;
     private javax.swing.JLabel labelStatus;
@@ -301,6 +316,16 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     private JFormattedTextField formattedTextField;
 
     public Agenda loadAgendaFromPanel() {
+        
+       Long id = null;
+        try {
+            if(!jlcodigo.getText().isEmpty()) {
+                id = Long.parseLong(jlcodigo.getText());
+            }
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Erro durante a conversão do label codigo# (Long).\n");
+        }
+        
         String nome = null;
 
         if (!tfNome.getText().trim().isEmpty()) {
@@ -332,7 +357,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         if (nome == null || data == null) {
             return null;
         }
-        return new Agenda(null, nome, descricao, data, inicial.getTime(), termino.getTime());
+        return new Agenda(id, nome, descricao, data, inicial.getTime(), termino.getTime());
     }
 
     public Agenda getAgenda() {
@@ -341,15 +366,19 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
     private void persistAgenda(Agenda agenda) {
         GenericDAO dao = new GenericDAO(persistence.getPersistenceContext(), Agenda.class);
-        List<Agenda> listAgenda = dao.findByName(agenda.getNome());
         
-        if(!listAgenda.isEmpty()){
-           dao.update(agenda);
+        if(agenda.getId()!= null){
+            dao.update(agenda);
+           JOptionPane.showMessageDialog(null, "Agenda Atualizada!!","Atualização",
+           JOptionPane.INFORMATION_MESSAGE);
         }
         else{
             dao.save(agenda);
-        }
-                
+            JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
+            JOptionPane.INFORMATION_MESSAGE);
+        }        
+        dispose();
+        dao.close();                
     }
 
     private void registerAgenda(Agenda agenda) {
@@ -361,7 +390,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
     public void setAgenda(Agenda agenda) {
         resetForm();
         if (agenda != null) {
-            populaSetor(agenda);
+            populaAgenda(agenda);
         }
     }
 
@@ -371,7 +400,8 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         jDateChooser.setDate(null);
     }
 
-    private void populaSetor(Agenda agenda) {
+    private void populaAgenda(Agenda agenda) {
+        jlcodigo.setText(String.valueOf(agenda.getId()));
         tfNome.setText(agenda.getNome());
         taDescricao.setText(agenda.getDescricao());
         jDateChooser.setDate(agenda.getAgenda());
@@ -380,6 +410,11 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         jspinnerInicial = new javax.swing.JSpinner(sm);
         JSpinner.DateEditor de = new JSpinner.DateEditor(jspinnerInicial, "HH:mm:ss");
         jspinnerInicial.setEditor(de);
+        
+        sm = new SpinnerDateModel(agenda.getHora_fim(), null, null, Calendar.HOUR_OF_DAY);
+        jspinnerTermino = new javax.swing.JSpinner(sm);
+        de = new JSpinner.DateEditor(jspinnerTermino, "HH:mm:ss");
+        jspinnerTermino.setEditor(de);                
 
     }
 }

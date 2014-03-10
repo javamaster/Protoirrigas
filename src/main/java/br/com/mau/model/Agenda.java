@@ -36,7 +36,7 @@ public class Agenda implements Serializable {
     public Agenda() {
     }
 
-     public Agenda(Long id, String nome, String decricao, Date date, 
+     public Agenda(Long id, String nome, String descricao, Date date, 
                   Date hora_inicio, Date hora_fim) {
         this.id = id;
         this.nome = nome;

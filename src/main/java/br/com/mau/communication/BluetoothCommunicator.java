@@ -23,9 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.com.mau.dao.impl.GenericDAO;
 import br.com.mau.controller.PersistenceController;
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * 
@@ -42,8 +40,8 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     private static final String PORT_NAMES[] = {
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
-            "COM4", "COM7",// Windows   
-            "COM13","COM14","COM40",// Windows   
+            "COM4",// Windows   
+            
             "/dev/rfcomm0" // Ubuntu Bluetooth
     };
     private ArrayList<CommPortIdentifier> ports;
@@ -217,16 +215,16 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
         
         System.out.println(inputLine.length());
         
-            if(inputLine.length() < 18){
+            if(inputLine.length() < 24){
                 saida = inputLine;
                 humidity = "";
                 temperature = "";
                 luminosity = "";
                 
                 humidity = saida.substring(saida.indexOf("U")+2,saida.indexOf("T")-1);
-                temperature = saida.substring(saida.indexOf("T")+2,saida.lastIndexOf(".")+2);
-                
-                System.out.println("humidity: "+ humidity +" - temperature: "+ temperature);
+                temperature = saida.substring(saida.indexOf("T")+2,saida.indexOf("L")-1);
+                luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
+                System.out.println("humidity: "+ humidity +" - temperature: "+ temperature+ " - luminosidade: "+luminosity);
                 
                // luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
 //                java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
@@ -235,6 +233,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 ambiente.setRecordDate(new java.util.Date(c.getTime().getTime()));
                 ambiente.setHumidity(Float.parseFloat(humidity));
                 ambiente.setTemperature(Float.parseFloat(temperature));
+                ambiente.setLuminosity(Float.parseFloat(luminosity));
                 
                 return ambiente;
             }

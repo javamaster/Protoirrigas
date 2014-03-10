@@ -74,6 +74,7 @@ public class DataExportExcel {
         
         HSSFCellStyle style = workBook.createCellStyle();
             style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            
             rowTitle.setRowStyle(style);
             
             rowTitle.createCell(0).setCellValue("DATA");

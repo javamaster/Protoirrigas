@@ -43,7 +43,7 @@ public class Setor implements Serializable {
     private String tipoSolo;
     
     @Column(name="status")
-    private boolean status;
+    private Boolean status;
     
     @NotNull
     private double comprimento;
@@ -137,11 +137,11 @@ public class Setor implements Serializable {
         this.ambientes = ambientes;
     }
 
-    public boolean isStatus() {
+    public Boolean isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
     

@@ -56,8 +56,6 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         tfNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        rbAtivo = new javax.swing.JRadioButton();
-        rbDesativo = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taDescricao = new javax.swing.JTextArea();
@@ -65,6 +63,7 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         cbTipoSolo = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         jlCodigo = new javax.swing.JLabel();
+        jcheckStatus = new javax.swing.JCheckBox();
         jbSalvar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
         jbExcluir = new javax.swing.JButton();
@@ -115,17 +114,6 @@ public class JIFSetor extends javax.swing.JInternalFrame {
 
         jLabel1.setText("status:");
 
-        buttonGroupStaus.add(rbAtivo);
-        rbAtivo.setText("ativo");
-
-        buttonGroupStaus.add(rbDesativo);
-        rbDesativo.setText("desativo");
-        rbDesativo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbDesativoActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("descrição:");
 
         taDescricao.setColumns(20);
@@ -137,6 +125,8 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         cbTipoSolo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Arenoso", "Argiloso", "Areno-argiloso" }));
 
         jLabel8.setText("codigo#:");
+
+        jcheckStatus.setText("Ativo");
 
         javax.swing.GroupLayout pSetorLayout = new javax.swing.GroupLayout(pSetor);
         pSetor.setLayout(pSetorLayout);
@@ -167,11 +157,9 @@ public class JIFSetor extends javax.swing.JInternalFrame {
                                     .addGroup(pSetorLayout.createSequentialGroup()
                                         .addGap(9, 9, 9)
                                         .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbAtivo)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(rbDesativo)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jcheckStatus)
+                                        .addGap(67, 67, 67)
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jlCodigo)))
@@ -208,13 +196,12 @@ public class JIFSetor extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(tfLargura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(21, 21, 21)
+                .addGap(17, 17, 17)
                 .addGroup(pSetorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(rbAtivo)
-                    .addComponent(rbDesativo)
                     .addComponent(jLabel8)
-                    .addComponent(jlCodigo))
+                    .addComponent(jlCodigo)
+                    .addComponent(jcheckStatus))
                 .addGroup(pSetorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pSetorLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -270,7 +257,7 @@ public class JIFSetor extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pSetor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar)
                     .addComponent(jbCancelar)
@@ -301,10 +288,6 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     private void tfNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNomeActionPerformed
-
-    private void rbDesativoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDesativoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbDesativoActionPerformed
 
     private void tfComprimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfComprimentoActionPerformed
         // TODO add your handling code here:
@@ -375,11 +358,12 @@ public class JIFSetor extends javax.swing.JInternalFrame {
             throw new RuntimeException("Erro durante a conversão do campo largura (double).\nConteudo inválido!");
         }
           
-        Boolean status = null;        
-        if(rbAtivo.isEnabled()){
-            status = Boolean.TRUE;
-        }else if(rbDesativo.isEnabled()){
-            status = Boolean.FALSE;
+        Boolean status = false;    
+        
+        if(jcheckStatus.isSelected()){
+            status = true;
+        }else {
+            status = false;
         }
         
         String descricao = null;
@@ -409,10 +393,10 @@ public class JIFSetor extends javax.swing.JInternalFrame {
         cbCultura.setSelectedItem(s.getCultura().getNome());
         cbTipoSolo.setSelectedItem(s.getTipoSolo());        
         if (s.isStatus() == Boolean.TRUE) {
-            rbAtivo.setEnabled(Boolean.TRUE);            
+            jcheckStatus.setSelected(true);            
         }
         else{
-            rbDesativo.setEnabled(Boolean.TRUE);
+            jcheckStatus.setSelected(false);
         }
     }
     
@@ -459,10 +443,9 @@ public class JIFSetor extends javax.swing.JInternalFrame {
     private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbExcluir;
     private javax.swing.JButton jbSalvar;
+    private javax.swing.JCheckBox jcheckStatus;
     private javax.swing.JLabel jlCodigo;
     private javax.swing.JPanel pSetor;
-    private javax.swing.JRadioButton rbAtivo;
-    private javax.swing.JRadioButton rbDesativo;
     private javax.swing.JTextArea taDescricao;
     private javax.swing.JTextField tfComprimento;
     private javax.swing.JTextField tfLargura;
