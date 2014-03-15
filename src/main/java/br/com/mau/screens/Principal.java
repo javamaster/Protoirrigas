@@ -20,6 +20,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
@@ -33,6 +34,7 @@ import javax.swing.plaf.metal.OceanTheme;
 public class Principal extends javax.swing.JFrame {
 
     public static final String MD5 = "md5", SHA1 ="sha1";
+    public static final String MOTIF = "Motif", METAL = "Metal", NIMBUS = "Nimbus", SYSTEM = "System";
     /**
      * Creates new form Principal
      */
@@ -81,6 +83,13 @@ public class Principal extends javax.swing.JFrame {
         jmenuCadastrarCultura = new javax.swing.JMenuItem();
         menuAmbiente = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuLooks = new javax.swing.JMenu();
+        jMenuLookMetal = new javax.swing.JMenuItem();
+        jMenuLookMotif = new javax.swing.JMenuItem();
+        jMenuLookNimbus = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItemSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Cadastro");
@@ -287,6 +296,54 @@ public class Principal extends javax.swing.JFrame {
 
         menuBarMain.add(menuAmbiente);
 
+        jMenu1.setText("Ajuda");
+
+        jMenuLooks.setText("LookAndFeels");
+
+        jMenuLookMetal.setText("Metal");
+        jMenuLookMetal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuLookMetalActionPerformed(evt);
+            }
+        });
+        jMenuLooks.add(jMenuLookMetal);
+
+        jMenuLookMotif.setText("Motif");
+        jMenuLookMotif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuLookMotifActionPerformed(evt);
+            }
+        });
+        jMenuLooks.add(jMenuLookMotif);
+
+        jMenuLookNimbus.setText("Nimbus");
+        jMenuLookNimbus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuLookNimbusActionPerformed(evt);
+            }
+        });
+        jMenuLooks.add(jMenuLookNimbus);
+
+        jMenuItem6.setText("System");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenuLooks.add(jMenuItem6);
+
+        jMenu1.add(jMenuLooks);
+
+        jMenuItemSobre.setText("Sobre...");
+        jMenuItemSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSobreActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItemSobre);
+
+        menuBarMain.add(jMenu1);
+
         setJMenuBar(menuBarMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -381,16 +438,79 @@ public class Principal extends javax.swing.JFrame {
             dispose();
     }//GEN-LAST:event_btCancelActionPerformed
 
-    public static void setLookAndFeelAtSystem(String lookandfeel, String Theme) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
+    private void jMenuItemSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSobreActionPerformed
+        
+        JIFSobre sobre = new JIFSobre();
+        
+        jDPCadastro.add(sobre);
+        
+        sobre.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItemSobreActionPerformed
+
+    private void jMenuLookMetalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuLookMetalActionPerformed
+        try {
+            setLookAndFeelAtSystem(METAL, "Ocean");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuLookMetalActionPerformed
+
+    private void jMenuLookMotifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuLookMotifActionPerformed
+        try {
+            setLookAndFeelAtSystem(MOTIF, "");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuLookMotifActionPerformed
+
+    private void jMenuLookNimbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuLookNimbusActionPerformed
+        try {
+            setLookAndFeelAtSystem(NIMBUS, "");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuLookNimbusActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        try {
+            setLookAndFeelAtSystem(SYSTEM, "");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    public  void setLookAndFeelAtSystem(String lookandfeel, String Theme) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
         String lookAndFeel = null;
        
         if (lookandfeel != null) {
             switch (lookandfeel) {
                 case "Metal":
-                    lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-                  //  an alternative way to set the Metal L&F is to replace the 
-                  // previous line with:
-                  // lookAndFeel = "javax.swing.plaf.metal.MetalLookAndFeel";
+                    lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();                    
                     break;
                 case "System":
                     lookAndFeel = UIManager.getSystemLookAndFeelClassName();
@@ -404,9 +524,6 @@ public class Principal extends javax.swing.JFrame {
                 case "GTK":
                     lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
                     break;
-                case "Liquid":
-                        lookAndFeel = "com.birosoft.liquid.LiquidLookAndFeel";
-                        break;
                 default:
                     System.err.println("Unexpected value of LOOKANDFEEL specified: "
                                        + lookandfeel);
@@ -415,8 +532,12 @@ public class Principal extends javax.swing.JFrame {
             }
 
     }
-        
+            //Altera o lookAndFeel
             UIManager.setLookAndFeel(lookAndFeel);
+            
+            //Atualiza as modificações no Swing
+            SwingUtilities.updateComponentTreeUI(this);
+            
             if (lookandfeel.equals("Metal")) {
                 switch (Theme) {
                     case "DefaultMetal":
@@ -435,42 +556,24 @@ public class Principal extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+       
         try {
-            /* Set the Nimbus look and feel */
-            //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-            /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-             * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-             */
-    //        try {
-    //            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-    //                if ("Nimbus".equals(info.getName())) {
-    //                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-    //                    break;
-    //                }
-    //            }
-    //        } catch (ClassNotFoundException ex) {
-    //            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //        } catch (InstantiationException ex) {
-    //            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //        } catch (IllegalAccessException ex) {
-    //            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-    //            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    //        }
-            //</editor-fold>
-//            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-            setLookAndFeelAtSystem("System", null);
-//            setLookAndFeelAtSystem("Metal", "");
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (InstantiationException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -486,11 +589,18 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItemSobre;
+    private javax.swing.JMenuItem jMenuLookMetal;
+    private javax.swing.JMenuItem jMenuLookMotif;
+    private javax.swing.JMenuItem jMenuLookNimbus;
+    private javax.swing.JMenu jMenuLooks;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JMenuItem jmenuCadastrarCultura;

@@ -20,9 +20,11 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import br.com.mau.relatorios.DataExportExcel;
 import br.com.mau.relatorios.FileCustomFilter;
+import java.awt.Color;
 import java.io.PrintWriter;
 import javax.swing.JFileChooser;
-
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -30,22 +32,15 @@ import javax.swing.JFileChooser;
  */
 public class JIFAmbientes extends javax.swing.JInternalFrame {
 
-    private int intervalo_logs = 6, contador = 0, max_columns = 15;
-   
-    private PersistenceController persistenceController;  
-    
+    private int intervalo_logs = 6, contador = 0, max_columns = 16;
+    private PersistenceController persistenceController;
     private Date min_u_hora_hj = new Date();
-    
     private Date max_u_hora_hj = new Date();
-    
     private Date min_t_hora_hj = new Date();
-    
     private Date max_t_hora_hj = new Date();
-    
-    private float min_u_valor_hj=0,max_u_valor_hj=0,min_t_valor_hj=0,max_t_valor_hj=0;
-    
+    private float min_u_valor_hj = 0, max_u_valor_hj = 0, min_t_valor_hj = 0, max_t_valor_hj = 0;
     private static final int CONNECTED = 1, NOT_CONNECTED = 0;
-    
+
     /**
      * Creates new form JIFAmbientes
      */
@@ -193,14 +188,16 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfRate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbPortas, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelStatus))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                    .addComponent(labelStatus)
+                    .addGroup(panelConfigLayout.createSequentialGroup()
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfRate, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbPortas, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(69, 69, 69)
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         panelConfigLayout.setVerticalGroup(
             panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +235,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
@@ -257,14 +254,14 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(panelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jbtnExportar))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
@@ -341,7 +338,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(270, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,7 +377,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(edt_maxima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -436,9 +433,9 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jedit_exibicoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jedit_exibicoesActionPerformed
-        
+
         max_columns = Integer.parseInt(jedit_exibicoes.getText());
-        
+
     }//GEN-LAST:event_jedit_exibicoesActionPerformed
 
     private void cbPortasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPortasActionPerformed
@@ -449,12 +446,12 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         //        showImageStatusConnection();
         Object[] params = loadConnectionPane();
 
-        if (params != null){
+        if (params != null) {
 
-            Integer index = (Integer)params[2];
+            Integer index = (Integer) params[2];
 
-            if(index != -1){
-                Integer rate = (Integer)params[1];
+            if (index != -1) {
+                Integer rate = (Integer) params[1];
                 communicator.connect(portas.get(index), rate);
                 labelStatus.setText("Conexão estabelecida!!");
                 changeConnectionIcon(CONNECTED);
@@ -463,253 +460,266 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 //Atualizar a tabela de ambientes
                 timer = task();
             }
-        }
-        else{
+        } else {
             labelStatus.setText("Error: Confira os valores!!");
         }
     }//GEN-LAST:event_btStartActionPerformed
 
     private void btStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStopActionPerformed
-        if(communicator != null){
+        if (communicator != null) {
             communicator.close();
             btStop.setEnabled(false);
             btStart.setEnabled(true);
             labelStatus.setText("Sistema Desconectado!!");
             changeConnectionIcon(NOT_CONNECTED);
         }
-        if(timer != null){
+        if (timer != null) {
             //Para a tarefa responsável pelo preenchimento da tabela de dados;
             timer.cancel();
         }
     }//GEN-LAST:event_btStopActionPerformed
 
     private void jbtnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnExportarActionPerformed
-            
-            //Recupera do banco
-            ArrayList<Ambiente> ambientes = getHistoricoAmbientes();
-            DataExportExcel excel = null;
-            
-            if(ambientes != null){            
-                JFileChooser chooser = new JFileChooser();
-                FileCustomFilter filtro = new FileCustomFilter("excel files", new String[]{"xls"});
-                chooser.setFileFilter(filtro);
-                chooser.setAcceptAllFileFilterUsed(false);
 
-                    int result = chooser.showSaveDialog(null);
+        //Recupera do banco
+        ArrayList<Ambiente> ambientes = getHistoricoAmbientes();
+        DataExportExcel excel = null;
 
-                    if(result == JFileChooser.APPROVE_OPTION){
-                        PrintWriter pw = null;
-                        try {
-                            String filepath = chooser.getSelectedFile().getAbsolutePath();
+        if (ambientes != null) {
+            JFileChooser chooser = new JFileChooser();
+            FileCustomFilter filtro = new FileCustomFilter("excel files", new String[]{"xls"});
+            chooser.setFileFilter(filtro);
+            chooser.setAcceptAllFileFilterUsed(false);
 
-                            excel = new DataExportExcel();
-                            excel.expExcel(filepath, ambientes);
-                            
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
+            int result = chooser.showSaveDialog(null);
+
+            if (result == JFileChooser.APPROVE_OPTION) {
+                PrintWriter pw = null;
+                try {
+                    String filepath = chooser.getSelectedFile().getAbsolutePath();
+
+                    excel = new DataExportExcel();
+                    excel.expExcel(filepath, ambientes);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
-       }
-            
+
     }//GEN-LAST:event_jbtnExportarActionPerformed
 
     private Object[] loadConnectionPane() {
         String portaName = (String) cbPortas.getSelectedItem();
         int index = cbPortas.getSelectedIndex();
         Integer rate = null;
-        
-        if(!tfRate.getText().trim().isEmpty()){
+
+        if (!tfRate.getText().trim().isEmpty()) {
             rate = Integer.parseInt(tfRate.getText().trim());
         }
-        
-        Object[] parametros = {portaName,rate,index};
-        
-        if(portaName != null && rate!=null){
+
+        Object[] parametros = {portaName, rate, index};
+
+        if (portaName != null && rate != null) {
             return parametros;
         }
-        return null;         
+        return null;
     }
-    
-    private void verifica_mx_min(float temperatura, float umidade){
+
+    private void verifica_mx_min(float temperatura, float umidade) {
         DateFormat formatedDate = new SimpleDateFormat("HH:mm:ss");
-        
-        if(min_u_valor_hj == 0){ // primeira execução
-                min_u_valor_hj = umidade;
-                max_u_valor_hj = umidade;
-                min_t_valor_hj = temperatura;
-                max_t_valor_hj = temperatura;
-                
-                min_u_hora_hj = new Date();
-                max_u_hora_hj = new Date();
-                min_t_hora_hj = new Date();
-                max_t_hora_hj = new Date(); 
-                
-                edt_minima_hj_u_hora.setText((String)formatedDate.format(min_u_hora_hj));
-                edt_minima_hj_u_valor.setText(""+min_u_valor_hj);
-                
-                edt_maxima_hj_u_hora.setText((String)formatedDate.format(max_u_hora_hj));
-                edt_maxima_hj_u_valor.setText(""+max_u_valor_hj);
-                
-                edt_minima_hj_t_hora.setText((String)formatedDate.format(min_t_hora_hj));
-                edt_minima_hj_t_valor.setText(""+min_t_valor_hj);
-                
-                edt_maxima_hj_t_hora.setText((String)formatedDate.format(max_t_hora_hj));
-                edt_maxima_hj_t_valor.setText(""+max_t_valor_hj);
+
+        if (min_u_valor_hj == 0) { // primeira execução
+            min_u_valor_hj = umidade;
+            max_u_valor_hj = umidade;
+            min_t_valor_hj = temperatura;
+            max_t_valor_hj = temperatura;
+
+            min_u_hora_hj = new Date();
+            max_u_hora_hj = new Date();
+            min_t_hora_hj = new Date();
+            max_t_hora_hj = new Date();
+
+            edt_minima_hj_u_hora.setText((String) formatedDate.format(min_u_hora_hj));
+            edt_minima_hj_u_valor.setText("" + min_u_valor_hj);
+
+            edt_maxima_hj_u_hora.setText((String) formatedDate.format(max_u_hora_hj));
+            edt_maxima_hj_u_valor.setText("" + max_u_valor_hj);
+
+            edt_minima_hj_t_hora.setText((String) formatedDate.format(min_t_hora_hj));
+            edt_minima_hj_t_valor.setText("" + min_t_valor_hj);
+
+            edt_maxima_hj_t_hora.setText((String) formatedDate.format(max_t_hora_hj));
+            edt_maxima_hj_t_valor.setText("" + max_t_valor_hj);
         }
-        
-        if(min_u_valor_hj > umidade){
+
+        if (min_u_valor_hj > umidade) {
             min_u_valor_hj = umidade;
             min_u_hora_hj = new Date();
             edt_minima_hj_u_hora.setText(formatedDate.format(min_u_hora_hj));
-            edt_minima_hj_u_valor.setText(""+min_u_valor_hj);
+            edt_minima_hj_u_valor.setText("" + min_u_valor_hj);
         }
-        if(max_u_valor_hj<umidade){
-                max_u_valor_hj = umidade;
-                max_u_hora_hj = new Date();
-                edt_maxima_hj_u_hora.setText((String)formatedDate.format(max_u_hora_hj));
-                edt_maxima_hj_u_valor.setText(""+max_u_valor_hj);
+        if (max_u_valor_hj < umidade) {
+            max_u_valor_hj = umidade;
+            max_u_hora_hj = new Date();
+            edt_maxima_hj_u_hora.setText((String) formatedDate.format(max_u_hora_hj));
+            edt_maxima_hj_u_valor.setText("" + max_u_valor_hj);
         }
-        
-        if(min_t_valor_hj>temperatura){
-                min_t_valor_hj = temperatura;
-                min_t_hora_hj = new Date();
-                edt_minima_hj_t_hora.setText((String)formatedDate.format(min_t_hora_hj));
-                edt_minima_hj_t_valor.setText(""+min_t_valor_hj);
+
+        if (min_t_valor_hj > temperatura) {
+            min_t_valor_hj = temperatura;
+            min_t_hora_hj = new Date();
+            edt_minima_hj_t_hora.setText((String) formatedDate.format(min_t_hora_hj));
+            edt_minima_hj_t_valor.setText("" + min_t_valor_hj);
         }
-        
-        if(max_t_valor_hj<temperatura){
+
+        if (max_t_valor_hj < temperatura) {
             max_t_valor_hj = temperatura;
             max_t_hora_hj = new Date();
-            edt_maxima_hj_t_hora.setText((String)formatedDate.format(max_t_hora_hj));
-            edt_maxima_hj_t_valor.setText(""+max_t_valor_hj);
-         }
-        
+            edt_maxima_hj_t_hora.setText((String) formatedDate.format(max_t_hora_hj));
+            edt_maxima_hj_t_valor.setText("" + max_t_valor_hj);
+        }
+
     }
-    
-    private void loadPorts(){
-        
+
+    private void loadPorts() {
+
         communicator.initialize();
         portas = communicator.getPorts();
-        
-        if(!portas.isEmpty()){
-            for (CommPortIdentifier portId : portas){
+
+        if (!portas.isEmpty()) {
+            for (CommPortIdentifier portId : portas) {
                 cbPortas.addItem(portId.getName());
-                System.out.println("Porta: "+portId.getName());
+                System.out.println("Porta: " + portId.getName());
             }
             labelStatus.setText("Comunicação Serial autorizada!!");
-        }
-        else{
+        } else {
             labelStatus.setText("Nenhuma porta identificada!!");
         }
-        
+
     }
-    
-    public Timer task(){
-      long TEMPO = (1000 * intervalo_logs); 
-      
-      Timer timer = null;  
-      
-        if (timer == null) {  
-            timer = new Timer();  
-            
-            TimerTask tarefa = new TimerTask() {  
-            
+
+    public Timer task() {
+        long TEMPO = (1000 * intervalo_logs);
+
+        Timer timer = null;
+
+        if (timer == null) {
+            timer = new Timer();
+
+            TimerTask tarefa = new TimerTask() {
                 GenericDAO dao = new GenericDAO(persistenceController.getPersistenceContext(), Ambiente.class);
-             
-              @Override
-              public void run() {  
-                try {
-                    
-                    Long lastID = null;
-                    Ambiente lastAmbiente = null;
-                 
-                    lastID = dao.getLastIdRecord();
-                    
-                    if(lastID != null){
-                        lastAmbiente = (Ambiente) dao.getByID(lastID);
-                        //atualizar dados preechendo a tabela
-                        preencher_tabela(lastAmbiente);
-                        verifica_mx_min(lastAmbiente.getTemperature(), lastAmbiente.getHumidity());
-                        jbtnExportar.setEnabled(true);
-                    }                   
-                    
-                    if(contador == max_columns){
-                        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
-                        model.setNumRows(0);     
-                        contador = 0;
+
+                @Override
+                public void run() {
+                    try {
+
+                        Long lastID = null;
+                        Ambiente lastAmbiente = null;
+
+                        lastID = dao.getLastIdRecord();
+
+                        if (lastID != null) {
+                            lastAmbiente = (Ambiente) dao.getByID(lastID);
+                            //atualizar dados preechendo a tabela
+                            preencher_tabela(lastAmbiente);
+                            verifica_mx_min(lastAmbiente.getTemperature(), lastAmbiente.getHumidity());
+                            jbtnExportar.setEnabled(true);
+                        }
+
+                        if (contador == max_columns) {
+                            DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+                            model.setNumRows(0);
+                            contador = 0;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                  
-                } catch (Exception e) {  
-                    e.printStackTrace(); 
-                }  
-              }  
-            };  
-            
-            timer.scheduleAtFixedRate(tarefa, 0, TEMPO);  
-            
+                }
+            };
+
+            timer.scheduleAtFixedRate(tarefa, 0, TEMPO);
+
         }
         return timer;
-  }
-    
-    public void preencher_tabela(Ambiente ambiente){
-        
-        
-       DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
-        
-        if(contador == 0) {
-            model.setNumRows(0);            
-        }
-        
-        try {            
-                contador++;
-                DateFormat formato = new SimpleDateFormat("HH:mm:ss");  
-                String formattedDate = formato.format(ambiente.getRecordDate());
-                
-                model.addRow(new Object[]{formattedDate,ambiente.getHumidity(), 
-                ambiente.getTemperature(),ambiente.getLuminosity()});                
+    }
 
-            
+    public void preencher_tabela(Ambiente ambiente) {
+
+
+        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+
+        if (contador == 0) {
+            model.setNumRows(0);
+        }
+
+        try {
+            contador++;
+            DateFormat formato = new SimpleDateFormat("HH:mm:ss");
+            String formattedDate = formato.format(ambiente.getRecordDate());
+
+            model.addRow(new Object[]{formattedDate, ambiente.getHumidity(),
+                        ambiente.getTemperature(), ambiente.getLuminosity()});
+
+            changeColorCell(ambiente.getHumidity());
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,"Erro ao preencher tabela"+e);
+            JOptionPane.showMessageDialog(null, "Erro ao preencher tabela" + e);
         }
     }
-    
-    private void limparTabela(){
-            DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
-            model.setNumRows(0);
-            contador = 0;
-    }
-    
-     private void loadConnection() {
+
+    public void changeColorCell(float sensorValue) {
         
-        if(status_connect == Boolean.TRUE){
-            
+        DefaultTableCellRenderer colorRenderer =
+                new DefaultTableCellRenderer() {
+                    @Override
+                    public void setValue(Object value) {
+                            setBackground(Color.RED);
+                            setForeground(Color.WHITE);
+                        
+                            super.setValue(value);
+                    }
+                };
+        TableColumn column = jtable_ambiente.getColumn("Umidade (solo)");  
+        column.setCellRenderer(colorRenderer);  
+    }
+
+    private void limparTabela() {
+        DefaultTableModel model = (DefaultTableModel) jtable_ambiente.getModel();
+        model.setNumRows(0);
+        contador = 0;
+    }
+
+    private void loadConnection() {
+
+        if (status_connect == Boolean.TRUE) {
+
             changeConnectionIcon(CONNECTED);
             //habilita botao de parada e desabilita botao start
             btStart.setEnabled(false);
             btStop.setEnabled(true);
             //inicia tarefa de preenchimento de tabela
             timer = task();
-            
+
         }
     }
-     
-     private void changeConnectionIcon(int status) {
-       switch(status){
-           case CONNECTED:
-               labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_txrx.png")));        
-               status_connect = true;
-               break;
-           case NOT_CONNECTED:
-               labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_idle.png")));
-               status_connect = false;
-               break;
-           default:
-               throw new IllegalArgumentException("Option Not Exists!!");
-       }
-       
+
+    private void changeConnectionIcon(int status) {
+        switch (status) {
+            case CONNECTED:
+                labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_txrx.png")));
+                status_connect = true;
+                break;
+            case NOT_CONNECTED:
+                labelImageStatus.setIcon(new ImageIcon(JIFAmbientes.class.getResource("/br/images/status_idle.png")));
+                status_connect = false;
+                break;
+            default:
+                throw new IllegalArgumentException("Option Not Exists!!");
+        }
+
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btStart;
     private javax.swing.JButton btStop;
@@ -760,7 +770,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
     private ArrayList<Ambiente> getHistoricoAmbientes() {
         dao = new GenericDAO(persistenceController.getPersistenceContext(), Ambiente.class);
-        
+
         return (ArrayList<Ambiente>) dao.findAll();
     }
 }

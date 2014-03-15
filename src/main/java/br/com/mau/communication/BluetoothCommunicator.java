@@ -40,8 +40,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     private static final String PORT_NAMES[] = {
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
-            "COM4",// Windows   
-            
+            "COM4","COM40",// Windows              
             "/dev/rfcomm0" // Ubuntu Bluetooth
     };
     private ArrayList<CommPortIdentifier> ports;
@@ -120,7 +119,6 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             return true;
             
         } catch (PortInUseException | UnsupportedCommOperationException | IOException | TooManyListenersException e) {
-            e.printStackTrace();
             System.out.println("Error: "+e.getMessage());
         }
         return false;
