@@ -4,22 +4,11 @@
  */
 package prototirrigas;
 
-import br.com.mau.communication.BluetoothCommunicator;
-import br.com.mau.communication.Communicator;
 import br.com.mau.dao.impl.GenericDAO;
-import br.com.mau.model.Ambiente;
 import br.com.mau.model.Cultura;
-import br.com.mau.model.Setor;
 import br.com.mau.model.Usuario;
 import br.com.mau.util.JPAUtil;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
