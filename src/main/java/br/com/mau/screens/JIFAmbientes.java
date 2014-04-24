@@ -32,7 +32,7 @@ import javax.swing.table.TableColumn;
  */
 public class JIFAmbientes extends javax.swing.JInternalFrame {
 
-    private int intervalo_logs = 6, contador = 0, max_columns = 16;
+    private int intervalo_logs = 15, contador = 0, max_columns = 16;
     private PersistenceController persistenceController;
     private Date min_u_hora_hj = new Date();
     private Date max_u_hora_hj = new Date();
@@ -117,11 +117,11 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Data", "Umidade (solo)", "Temperatura (Celsius)", "Luminosidade (Lums)"
+                "Data", "Umidade (solo)", "Tensão (volts)"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.String.class, java.lang.Float.class, java.lang.Float.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -261,12 +261,13 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(jedit_exibicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jbtnExportar))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ambientes", jPanel2);
 
         jPanel4.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel5.setText("Temperatura");
@@ -276,7 +277,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         jLabel7.setText("- maxima aferida: as");
 
         jLabel8.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jLabel8.setText("Umidade");
+        jLabel8.setText("Tensão");
 
         jLabel9.setText("- minima aferida: as");
 
@@ -338,7 +339,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(270, Short.MAX_VALUE))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -377,7 +378,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                     .addComponent(edt_maxima_hj_u_hora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(edt_maxima_hj_u_valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addContainerGap(295, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -409,7 +410,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -454,6 +455,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                 Integer rate = (Integer) params[1];
                 communicator.connect(portas.get(index), rate);
                 labelStatus.setText("Conexão estabelecida!!");
+                communicator.escreve("1");
                 changeConnectionIcon(CONNECTED);
                 btStop.setEnabled(true);
                 btStart.setEnabled(false);
@@ -467,6 +469,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
 
     private void btStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btStopActionPerformed
         if (communicator != null) {
+            communicator.escreve("0");
             communicator.close();
             btStop.setEnabled(false);
             btStart.setEnabled(true);
@@ -526,14 +529,14 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
         return null;
     }
 
-    private void verifica_mx_min(float temperatura, float umidade) {
+    private void verifica_mx_min(float tensao, float umidade) {
         DateFormat formatedDate = new SimpleDateFormat("HH:mm:ss");
 
         if (min_u_valor_hj == 0) { // primeira execução
             min_u_valor_hj = umidade;
             max_u_valor_hj = umidade;
-            min_t_valor_hj = temperatura;
-            max_t_valor_hj = temperatura;
+            min_t_valor_hj = tensao;
+            max_t_valor_hj = tensao;
 
             min_u_hora_hj = new Date();
             max_u_hora_hj = new Date();
@@ -566,15 +569,15 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             edt_maxima_hj_u_valor.setText("" + max_u_valor_hj);
         }
 
-        if (min_t_valor_hj > temperatura) {
-            min_t_valor_hj = temperatura;
+        if (min_t_valor_hj > tensao) {
+            min_t_valor_hj = tensao;
             min_t_hora_hj = new Date();
             edt_minima_hj_t_hora.setText((String) formatedDate.format(min_t_hora_hj));
             edt_minima_hj_t_valor.setText("" + min_t_valor_hj);
         }
 
-        if (max_t_valor_hj < temperatura) {
-            max_t_valor_hj = temperatura;
+        if (max_t_valor_hj < tensao) {
+            max_t_valor_hj = tensao;
             max_t_hora_hj = new Date();
             edt_maxima_hj_t_hora.setText((String) formatedDate.format(max_t_hora_hj));
             edt_maxima_hj_t_valor.setText("" + max_t_valor_hj);
@@ -623,7 +626,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
                             lastAmbiente = (Ambiente) dao.getByID(lastID);
                             //atualizar dados preechendo a tabela
                             preencher_tabela(lastAmbiente);
-                            verifica_mx_min(lastAmbiente.getTemperature(), lastAmbiente.getHumidity());
+                            verifica_mx_min(lastAmbiente.getVoltage(), lastAmbiente.getHumidity());
                             jbtnExportar.setEnabled(true);
                         }
 
@@ -660,7 +663,7 @@ public class JIFAmbientes extends javax.swing.JInternalFrame {
             String formattedDate = formato.format(ambiente.getRecordDate());
 
             model.addRow(new Object[]{formattedDate, ambiente.getHumidity(),
-                        ambiente.getTemperature(), ambiente.getLuminosity()});
+                        ambiente.getVoltage()});
 
             changeColorCell(ambiente.getHumidity());
 

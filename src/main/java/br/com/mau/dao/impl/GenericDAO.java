@@ -7,6 +7,7 @@ package br.com.mau.dao.impl;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -32,17 +33,23 @@ public class GenericDAO<PK, T> {
             this.em.getTransaction().begin();
             this.em.persist(entity);       
             this.em.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ConstraintViolationException e) {
+            System.out.println(e.getMessage());
             em.getTransaction().rollback();
         }
         
     }
     
     public void update(T entity){
-        this.em.getTransaction().begin();
-        this.em.merge(entity);
-        this.em.getTransaction().commit();
+        try {
+            this.em.getTransaction().begin();
+            this.em.merge(entity);
+            this.em.getTransaction().commit();
+        } catch (ConstraintViolationException e) {
+            System.out.println(e.getMessage());            
+            em.getTransaction().rollback();
+        }
+        
     }
     
     public void delete(PK pk){

@@ -24,9 +24,7 @@ public class Ambiente implements Serializable {
     
     private float humidity;
     
-    private float luminosity;
-    
-    private float temperature;
+    private float voltage;    
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date recordDate;
@@ -48,22 +46,6 @@ public class Ambiente implements Serializable {
         this.humidity = humidity;
     }
 
-    public float getLuminosity() {
-        return luminosity;
-    }
-
-    public void setLuminosity(float luminosity) {
-        this.luminosity = luminosity;
-    }
-
-    public float getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(float temperature) {
-        this.temperature = temperature;
-    }
-
     public Date getRecordDate() {
         return recordDate;
     }
@@ -71,5 +53,14 @@ public class Ambiente implements Serializable {
     public void setRecordDate(Date recordDate) {
         this.recordDate = recordDate;
     }
+
+    public float getVoltage() {
+        return voltage;
+    }
+
+    public void setVoltage(float voltage) {
+        this.voltage = voltage;
+    }
     
+        
 }

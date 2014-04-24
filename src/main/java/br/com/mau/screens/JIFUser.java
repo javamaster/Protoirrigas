@@ -9,7 +9,9 @@ import br.com.mau.model.Usuario;
 import br.com.mau.util.JPAUtil;
 import java.awt.Color;
 import java.awt.Font;
+import javax.persistence.RollbackException;
 import javax.swing.JOptionPane;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -183,11 +185,11 @@ public class JIFUser extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jbCancelar)
                         .addGap(18, 18, 18)
-                        .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(labelError, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jbCancelar, jbSalvar});
@@ -277,17 +279,19 @@ public class JIFUser extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Cadastrado no Banco!!","Cadastro Efetuado",
                 JOptionPane.INFORMATION_MESSAGE);
             }
+            dao.close();
         }else{
-            JOptionPane.showMessageDialog(null, "Não pôde ser cadastrado!! Valores inválidos","Cadastro Efetuado",
+            JOptionPane.showMessageDialog(null, "Não pôde ser cadastrado!! Senhas não conferem","Cadastro não Efetuado",
                 JOptionPane.INFORMATION_MESSAGE);
         }
-            dispose();
+        dispose();
         
-        } catch (Exception e) {
-            labelError.setBackground(Color.red);
-            labelError.setText("Preencha todos os campos");            
-        }finally{
-            dao.close();
+        } catch (RollbackException e) {
+            labelError.setForeground(Color.red);
+            labelError.setText("Error: verifique os campos");            
+        } catch (ConstraintViolationException e){
+            labelError.setForeground(Color.red);
+            labelError.setText(e.getMessage());            
         }
     }//GEN-LAST:event_jbSalvarActionPerformed
 

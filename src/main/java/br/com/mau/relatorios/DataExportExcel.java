@@ -48,8 +48,7 @@ public class DataExportExcel {
               HSSFRow row = sheet.createRow(i);
               row.createCell(0).setCellValue(ambiente.getRecordDate());
               row.createCell(1).setCellValue(ambiente.getHumidity());
-              row.createCell(2).setCellValue(ambiente.getTemperature());                
-              row.createCell(3).setCellValue(ambiente.getLuminosity());                
+              row.createCell(2).setCellValue(ambiente.getVoltage());                
               i++;
             }
              
@@ -79,9 +78,7 @@ public class DataExportExcel {
             
             rowTitle.createCell(0).setCellValue("DATA");
             rowTitle.createCell(1).setCellValue("UMIDADE");
-            rowTitle.createCell(2).setCellValue("TEMPERATURA");
-            rowTitle.createCell(3).setCellValue("LUMINOSIDADE");       
-           
+            rowTitle.createCell(2).setCellValue("VOLTAGEM");            
     }
     
 }

@@ -36,7 +36,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
     private GenericDAO genericDAO;
     private PersistenceController persistenceController;
     private SerialPort serialPort;
-    private String saida = "", humidity = "", temperature = "", luminosity = "";
+    private String saida = "", humidity = "", voltage = "";
     private static final String PORT_NAMES[] = {
                         "/dev/tty.usbserial-A9007UX1", // Mac OS X
             "/dev/ttyUSB0", // Linux
@@ -216,13 +216,12 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
             if(inputLine.length() < 24){
                 saida = inputLine;
                 humidity = "";
-                temperature = "";
-                luminosity = "";
+                voltage = "";                
                 
                 humidity = saida.substring(saida.indexOf("U")+2,saida.indexOf("T")-1);
-                temperature = saida.substring(saida.indexOf("T")+2,saida.indexOf("L")-1);
-                luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
-                System.out.println("humidity: "+ humidity +" - temperature: "+ temperature+ " - luminosidade: "+luminosity);
+                voltage = saida.substring(saida.indexOf("T")+2,saida.lastIndexOf(".")+2);
+                
+                System.out.println("humidity: "+ humidity +" - voltagem: "+ voltage);
                 
                // luminosity = saida.substring(saida.indexOf("L")+2, saida.lastIndexOf(".")+2);
 //                java.sql.Date currentDate = new java.sql.Date(new Date().getTime());
@@ -230,8 +229,7 @@ public class BluetoothCommunicator implements Communicator, SerialPortEventListe
                 Ambiente ambiente = new Ambiente();
                 ambiente.setRecordDate(new java.util.Date(c.getTime().getTime()));
                 ambiente.setHumidity(Float.parseFloat(humidity));
-                ambiente.setTemperature(Float.parseFloat(temperature));
-                ambiente.setLuminosity(Float.parseFloat(luminosity));
+                ambiente.setVoltage(Float.parseFloat(voltage));
                 
                 return ambiente;
             }

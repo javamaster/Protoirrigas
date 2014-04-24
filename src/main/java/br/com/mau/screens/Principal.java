@@ -73,7 +73,6 @@ public class Principal extends javax.swing.JFrame {
         menuBarMain = new javax.swing.JMenuBar();
         menuUsuario = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         menuAgenda = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -83,7 +82,7 @@ public class Principal extends javax.swing.JFrame {
         jmenuCadastrarCultura = new javax.swing.JMenuItem();
         menuAmbiente = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        menuAjuda = new javax.swing.JMenu();
         jMenuLooks = new javax.swing.JMenu();
         jMenuLookMetal = new javax.swing.JMenuItem();
         jMenuLookMotif = new javax.swing.JMenuItem();
@@ -224,10 +223,6 @@ public class Principal extends javax.swing.JFrame {
         });
         menuUsuario.add(jMenuItem1);
 
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/alter.png"))); // NOI18N
-        jMenuItem3.setText("Editar Usuario");
-        menuUsuario.add(jMenuItem3);
-
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/images/cancel.png"))); // NOI18N
         jMenuItem4.setText("Sair");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -296,7 +291,7 @@ public class Principal extends javax.swing.JFrame {
 
         menuBarMain.add(menuAmbiente);
 
-        jMenu1.setText("Ajuda");
+        menuAjuda.setText("Ajuda");
 
         jMenuLooks.setText("LookAndFeels");
 
@@ -332,7 +327,7 @@ public class Principal extends javax.swing.JFrame {
         });
         jMenuLooks.add(jMenuItem6);
 
-        jMenu1.add(jMenuLooks);
+        menuAjuda.add(jMenuLooks);
 
         jMenuItemSobre.setText("Sobre...");
         jMenuItemSobre.addActionListener(new java.awt.event.ActionListener() {
@@ -340,9 +335,9 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItemSobreActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItemSobre);
+        menuAjuda.add(jMenuItemSobre);
 
-        menuBarMain.add(jMenu1);
+        menuBarMain.add(menuAjuda);
 
         setJMenuBar(menuBarMain);
 
@@ -589,10 +584,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
@@ -606,6 +599,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmenuCadastrarCultura;
     private javax.swing.JMenuItem jmenuCadastrarSetor;
     private javax.swing.JMenu menuAgenda;
+    private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuAmbiente;
     private javax.swing.JMenuBar menuBarMain;
     private javax.swing.JMenu menuCultura;
@@ -662,7 +656,8 @@ public class Principal extends javax.swing.JFrame {
             menuCultura.setEnabled(false);
             menuSetor.setEnabled(false);
             menuAmbiente.setEnabled(false);
-            menuBarMain.setEnabled(false);
+            menuAjuda.setEnabled(false);
+            menuBarMain.setEnabled(false);            
         }
     }
     
@@ -673,6 +668,7 @@ public class Principal extends javax.swing.JFrame {
             menuCultura.setEnabled(true);
             menuSetor.setEnabled(true);
             menuAmbiente.setEnabled(true);
+            menuAjuda.setEnabled(true);
             menuBarMain.setEnabled(true);
         }
     }

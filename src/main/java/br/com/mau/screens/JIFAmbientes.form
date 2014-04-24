@@ -58,7 +58,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+              <Component id="jTabbedPane1" alignment="0" pref="549" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -113,7 +113,7 @@
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jbtnExportar" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="66" max="32767" attributes="0"/>
+                          <EmptySpace pref="78" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -129,20 +129,14 @@
                     <Component class="javax.swing.JTable" name="jtable_ambiente">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="0">
+                          <Table columnCount="3" rowCount="0">
                             <Column editable="true" title="Data" type="java.lang.String"/>
                             <Column editable="true" title="Umidade (solo)" type="java.lang.Float"/>
-                            <Column editable="true" title="Temperatura (Celsius)" type="java.lang.Float"/>
-                            <Column editable="true" title="Luminosidade (Lums)" type="java.lang.Float"/>
+                            <Column editable="true" title="Tens&#xe3;o (volts)" type="java.lang.Float"/>
                           </Table>
                         </Property>
                         <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                           <TableColumnModel selectionModel="0">
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title/>
                               <Editor/>
@@ -366,6 +360,11 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="cc" green="ff" red="cc" type="rgb"/>
                     </Property>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder/>
+                      </Border>
+                    </Property>
                   </Properties>
 
                   <Layout>
@@ -432,7 +431,7 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="270" max="32767" attributes="0"/>
+                              <EmptySpace pref="268" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -482,7 +481,7 @@
                                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="edt_maxima_hj_u_valor" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="285" max="32767" attributes="0"/>
+                              <EmptySpace pref="295" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -511,7 +510,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Arial" size="12" style="1"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Umidade"/>
+                        <Property name="text" type="java.lang.String" value="Tens&#xe3;o"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel9">

@@ -10,7 +10,7 @@ public class ArduinoReceiver {
     
     private static boolean statusSystem = false;
     private BluetoothCommunicator communicator;
-    public static final int ON = 1, OFF = 0, READ = 2;
+    public static final Integer ON = 1, OFF = 0, READ = 2;
     
 
     public ArduinoReceiver() {
