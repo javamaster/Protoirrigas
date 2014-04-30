@@ -289,7 +289,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
         if (agenda != null) {
             persistAgenda(agenda);
             registerAgenda(agenda);
-            dispose();
+            //dispose();
         } else {
             labelStatus.setText("** É necessario preencher todos os campos");
             log.error("Não foi possivel salvar agendamento - alguns valores estão nulos");
@@ -394,7 +394,7 @@ public class JIFAgendamento extends javax.swing.JInternalFrame {
 
     private void registerAgenda(Agenda agenda) {
         Agendamento agendamento = new Agendamento();
-        agendamento.escalonarAgenda2(agenda);
+        agendamento.escalonarAgenda2(agenda);        
     }
 
     public void setAgenda(Agenda agenda) {

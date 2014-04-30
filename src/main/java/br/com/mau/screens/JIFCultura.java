@@ -66,7 +66,7 @@ public class JIFCultura extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Descrição:");
 
-        cbCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Categoria 1", "Categoria 2", "Categoria 3", "Categoria 4" }));
+        cbCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ornamental", "Hortaliças", "Alimenticias" }));
         cbCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCategoriaActionPerformed(evt);

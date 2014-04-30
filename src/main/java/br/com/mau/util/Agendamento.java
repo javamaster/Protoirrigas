@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.quartz.CronScheduleBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.StdScheduler;
 
 /**
  *
@@ -37,13 +37,13 @@ public class Agendamento extends Thread{
     public Agendamento() {
         try {
             this.scheduler = StdSchedulerFactory.getDefaultScheduler();
-            //scheduler.start();
+            scheduler.start();
         } catch (SchedulerException ex) {
             Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    private Scheduler getEscalonador(){
+   private Scheduler getEscalonador(){
         return scheduler;
     }
     
@@ -85,8 +85,7 @@ public class Agendamento extends Thread{
            
             
             log.info("Escalonador iniciou o processo!!");
-        
-//    
+            
  
         } catch (SchedulerException ex) {
             ex.printStackTrace();
@@ -102,6 +101,8 @@ public class Agendamento extends Thread{
             jobInicio.setGroup(agenda.getNome().concat("Inicio"));
             jobInicio.setJobClass(StartIrrigationJob.class);
             jobInicio.setKey(JobKey.jobKey(agenda.getNome().concat("Inicio")));
+            JobDataMap map = new JobDataMap();
+            
             
             //Tarefa para finalizar o processo de irrigação
             JobDetailImpl jobTermino = new JobDetailImpl();
@@ -118,7 +119,9 @@ public class Agendamento extends Thread{
            
             Trigger inicioTrigger = TriggerBuilder.newTrigger()
                     .withIdentity("inicioTrigger", agenda.getNome().concat("Inicio"))
-                    .withSchedule(CronScheduleBuilder.cronSchedule(calendarInicio.get(Calendar.SECOND) +" "+calendarInicio.get(Calendar.MINUTE)+" "+calendarInicio.get(Calendar.HOUR)+" * * ?"))
+                    .withSchedule(CronScheduleBuilder.cronSchedule(calendarInicio.get(Calendar.SECOND) +" "+
+                    calendarInicio.get(Calendar.MINUTE)+" "+
+                    calendarInicio.get(Calendar.HOUR)+" * * ?"))
                     .build();
             
             Trigger terminoTrigger = TriggerBuilder.newTrigger()
@@ -128,12 +131,20 @@ public class Agendamento extends Thread{
                      +" "+calendarTermino.get(Calendar.HOUR)+" * * ?"))
                     .build();
             
+              escalonador.start();
+            
              escalonador.scheduleJob(jobInicio, inicioTrigger);
              escalonador.scheduleJob(jobTermino, terminoTrigger);
             
             log.debug("Escalonador iniciou o processo!!");
-        
-//            Thread.sleep(60L * 1000L); 
+            
+            
+//             escalonador.start();
+//             try { 
+//                 Thread.sleep(60L * 1000L);
+//             } catch (InterruptedException ex) {
+//                 Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
+//             }
 //            
 //            escalonador.shutdown(true);
  
